@@ -1,0 +1,52 @@
+:root {
+  --app-font-family:
+    Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --app-font-size: 14px;
+  --app-line-height: 1.5;
+
+  --p-text-color: #334155;
+  --p-text-muted-color: #64748b;
+  --p-surface-ground: #f8fafc;
+  --p-surface-card: #ffffff;
+  --p-surface-border: #e2e8f0;
+  --p-surface-hover: #f1f5f9;
+  --p-primary-color: #0ea5e9;
+  --p-primary-contrast-color: #ffffff;
+
+  --header-height: 48px;
+}
+
+.app-dark {
+  --p-text-color: #e2e8f0;
+  --p-text-muted-color: #94a3b8;
+  --p-surface-ground: #0f172a;
+  --p-surface-card: #1e293b;
+  --p-surface-border: #334155;
+  --p-surface-hover: #1e293b;
+  --p-primary-color: #38bdf8;
+  --p-primary-contrast-color: #082f49;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--app-font-family);
+  font-size: var(--app-font-size);
+  line-height: var(--app-line-height);
+  color: var(--p-text-color);
+  background: var(--p-surface-ground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
