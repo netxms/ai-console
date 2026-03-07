@@ -16,10 +16,12 @@ function handleSend() {
   if (!trimmed) return
   emit('send', trimmed)
   text.value = ''
+  nextTick(() => focus())
 }
 
 function focus() {
-  textarea.value?.$el?.querySelector('textarea')?.focus()
+  const el = textarea.value?.$el
+  if (el) el.focus()
 }
 
 watch(() => props.disabled, (val, oldVal) => {
