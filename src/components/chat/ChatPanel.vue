@@ -1,10 +1,18 @@
 <script setup>
+import { ref, watch, nextTick } from 'vue'
 import MessageList from './MessageList.vue'
 import ChatInput from './ChatInput.vue'
 import PendingQuestion from './PendingQuestion.vue'
 import { useAiChatStore } from '@/stores/aiChatStore'
 
 const chatStore = useAiChatStore()
+const chatInput = ref(null)
+
+watch(() => chatStore.messages.length, (len, oldLen) => {
+  if (len === 0 && oldLen !== 0) {
+    nextTick(() => chatInput.value?.focus())
+  }
+})
 
 function handleSend(text) {
   chatStore.sendMessage(text)
@@ -24,6 +32,7 @@ function handleSend(text) {
       @answer="(positive, option) => chatStore.answerQuestion(positive, option)"
     />
     <ChatInput
+      ref="chatInput"
       :disabled="chatStore.processing"
       class="chat-input"
       @send="handleSend"

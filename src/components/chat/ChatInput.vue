@@ -30,6 +30,8 @@ watch(() => props.disabled, (val, oldVal) => {
   }
 })
 
+defineExpose({ focus })
+
 function handleKeydown(e) {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault()
