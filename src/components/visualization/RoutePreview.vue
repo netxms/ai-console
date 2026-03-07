@@ -16,7 +16,7 @@ const hopTypeColors = {
    ROUTE: 'var(--p-blue-500)',
    VPN: 'var(--p-purple-500)',
    PROXY: 'var(--p-orange-500)',
-   DUMMY: 'var(--p-surface-400)',
+   DESTINATION: 'var(--p-green-500)',
    L2_LINK: 'var(--p-teal-500)',
 }
 
@@ -44,7 +44,10 @@ function openTab() {
             <div
                v-if="i < previewHops.length - 1 || remainingCount > 0 || !data.isComplete"
                class="route-preview-line"
-               :style="{ background: hopColor(hop.type) }"
+               :class="{ 'route-preview-line-dashed': hop.type === 'VPN' || hop.type === 'PROXY' }"
+               :style="hop.type === 'VPN' || hop.type === 'PROXY'
+                  ? { borderColor: hopColor(hop.type) }
+                  : { background: hopColor(hop.type) }"
             />
          </div>
          <div v-if="remainingCount > 0" class="route-preview-more">
@@ -150,6 +153,12 @@ function openTab() {
    top: 12px;
    width: 2px;
    height: 14px;
+}
+
+.route-preview-line-dashed {
+   background: none !important;
+   border-left: 2px dashed;
+   width: 0;
 }
 
 .route-preview-more {

@@ -12,12 +12,12 @@ const hopTypeColors = {
    ROUTE: { bg: 'var(--p-blue-50)', border: 'var(--p-blue-200)', text: 'var(--p-blue-600)', dot: 'var(--p-blue-500)' },
    VPN: { bg: 'var(--p-purple-50)', border: 'var(--p-purple-200)', text: 'var(--p-purple-600)', dot: 'var(--p-purple-500)' },
    PROXY: { bg: 'var(--p-orange-50)', border: 'var(--p-orange-200)', text: 'var(--p-orange-600)', dot: 'var(--p-orange-500)' },
-   DUMMY: { bg: 'var(--p-surface-100)', border: 'var(--p-surface-300)', text: 'var(--p-text-muted-color)', dot: 'var(--p-surface-400)' },
+   DESTINATION: { bg: 'var(--p-green-50)', border: 'var(--p-green-200)', text: 'var(--p-green-600)', dot: 'var(--p-green-500)' },
    L2_LINK: { bg: 'var(--p-teal-50)', border: 'var(--p-teal-200)', text: 'var(--p-teal-600)', dot: 'var(--p-teal-500)' },
 }
 
 function typeStyle(type) {
-   return hopTypeColors[type] || hopTypeColors.DUMMY
+   return hopTypeColors[type] || hopTypeColors.DESTINATION
 }
 
 function hopDetail(hop) {
@@ -35,8 +35,8 @@ function hopDetail(hop) {
          return hop.proxyNodeName || `Proxy node ${hop.proxyNodeId || ''}`
       case 'L2_LINK':
          return hop.name || 'L2 link'
-      case 'DUMMY':
-         return 'Intermediate hop'
+      case 'DESTINATION':
+         return 'Destination'
       default:
          return hop.name || ''
    }
@@ -71,8 +71,10 @@ defineExpose({ getColumnsAsCsv })
                <div
                   v-if="i < hops.length - 1 || !data.isComplete"
                   class="route-hop-line"
-                  :class="{ 'route-hop-line-dashed': hop.type === 'DUMMY' }"
-                  :style="{ background: hop.type === 'DUMMY' ? 'none' : typeStyle(hop.type).dot, borderColor: typeStyle(hop.type).dot }"
+                  :class="{ 'route-hop-line-dashed': hop.type === 'VPN' || hop.type === 'PROXY' }"
+                  :style="hop.type === 'VPN' || hop.type === 'PROXY'
+                     ? { background: 'none', borderColor: typeStyle(hop.type).dot }
+                     : { background: typeStyle(hop.type).dot }"
                />
             </div>
             <div class="route-hop-content">
