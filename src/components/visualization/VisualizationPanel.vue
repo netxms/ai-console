@@ -87,8 +87,8 @@ const viewComponents = {
 }
 
 .viz-tab.active {
-  color: var(--p-primary-color);
-  border-bottom-color: var(--p-primary-color);
+  color: var(--text-secondary);
+  border-bottom-color: var(--text-secondary);
 }
 
 .tab-title {

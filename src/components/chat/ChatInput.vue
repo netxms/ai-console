@@ -22,10 +22,9 @@ function focus() {
   textarea.value?.$el?.querySelector('textarea')?.focus()
 }
 
-watch(() => props.disabled, async (val, oldVal) => {
+watch(() => props.disabled, (val, oldVal) => {
   if (oldVal && !val) {
-    await nextTick()
-    focus()
+    nextTick(() => setTimeout(focus, 50))
   }
 })
 

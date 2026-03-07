@@ -31,8 +31,8 @@ const timeLabel = computed(() => {
 .user-bubble {
   max-width: 80%;
   padding: 0.625rem 0.875rem;
-  background: var(--p-primary-color);
-  color: var(--p-primary-contrast-color);
+  background: var(--surface-2);
+  color: var(--text-primary);
   border-radius: 12px 12px 2px 12px;
   white-space: pre-wrap;
   word-break: break-word;

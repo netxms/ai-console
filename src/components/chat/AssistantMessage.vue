@@ -59,8 +59,8 @@ const timeLabel = computed(() => {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: var(--p-primary-color);
-  color: var(--p-primary-contrast-color);
+  background: var(--sem-info);
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;

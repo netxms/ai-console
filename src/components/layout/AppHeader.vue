@@ -5,9 +5,11 @@ import Dialog from 'primevue/dialog'
 import { useAuthStore } from '@/stores/authStore'
 import { useAiChatStore } from '@/stores/aiChatStore'
 import { useVisualizationStore } from '@/stores/visualizationStore'
+import { useThemeStore } from '@/stores/themeStore'
 import { useRouter } from 'vue-router'
 
 const authStore = useAuthStore()
+const themeStore = useThemeStore()
 const chatStore = useAiChatStore()
 const vizStore = useVisualizationStore()
 const router = useRouter()
@@ -40,8 +42,8 @@ function handleLogout() {
   <header class="app-header">
     <div class="header-left">
       <span class="header-title">
-        <i class="pi pi-sparkles" />
-        NetXMS AI Console
+        <img src="/netxms-icon.png" alt="NetXMS" class="header-logo" />
+        AI Console
       </span>
     </div>
     <div class="header-right">
@@ -52,6 +54,14 @@ function handleLogout() {
         text
         size="small"
         @click="handleNewChat"
+      />
+      <Button
+        :icon="themeStore.dark ? 'pi pi-sun' : 'pi pi-moon'"
+        severity="secondary"
+        text
+        size="small"
+        v-tooltip.bottom="themeStore.dark ? 'Light mode' : 'Dark mode'"
+        @click="themeStore.toggle()"
       />
       <span class="user-name">{{ authStore.user?.username }}</span>
       <Button
@@ -86,8 +96,8 @@ function handleLogout() {
   justify-content: space-between;
   height: var(--header-height);
   padding: 0 1rem;
-  background: var(--p-surface-card);
-  border-bottom: 1px solid var(--p-surface-border);
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
 }
 
 .header-left {
@@ -96,9 +106,15 @@ function handleLogout() {
   gap: 0.5rem;
 }
 
+.header-logo {
+  height: 24px;
+  width: auto;
+}
+
 .header-title {
   font-weight: 600;
   font-size: 1rem;
+  color: var(--text-primary);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -110,8 +126,17 @@ function handleLogout() {
   gap: 0.5rem;
 }
 
+.header-right .p-button {
+  color: var(--text-secondary);
+}
+
+.header-right .p-button:hover {
+  color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.06);
+}
+
 .user-name {
   font-size: 0.85rem;
-  color: var(--p-text-muted-color);
+  color: var(--text-muted);
 }
 </style>

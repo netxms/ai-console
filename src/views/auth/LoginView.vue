@@ -26,8 +26,8 @@ async function handleLogin() {
   <div class="login-page">
     <form class="login-form" @submit.prevent="handleLogin">
       <div class="login-header">
-        <i class="pi pi-sparkles login-icon" />
-        <h1>NetXMS AI Console</h1>
+        <img src="/netxms-logo.png" alt="NetXMS" class="login-logo" />
+        <span class="login-subtitle">AI Console</span>
       </div>
 
       <Message v-if="authStore.error" severity="error" :closable="false">
@@ -90,17 +90,23 @@ async function handleLogin() {
 
 .login-header {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.login-header h1 {
-  margin: 0.5rem 0 0;
-  font-size: 1.25rem;
-  font-weight: 600;
+.login-logo {
+  max-width: 200px;
+  height: auto;
 }
 
-.login-icon {
-  font-size: 2rem;
-  color: var(--p-primary-color);
+.login-subtitle {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--p-text-muted-color);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .field {
