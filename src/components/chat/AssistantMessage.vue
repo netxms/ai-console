@@ -5,6 +5,7 @@ import ChartPreview from '@/components/visualization/ChartPreview.vue'
 import TablePreview from '@/components/visualization/TablePreview.vue'
 import GaugePreview from '@/components/visualization/GaugePreview.vue'
 import BarPiePreview from '@/components/visualization/BarPiePreview.vue'
+import RoutePreview from '@/components/visualization/RoutePreview.vue'
 
 const props = defineProps({
   blocks: { type: Array, required: true },
@@ -18,6 +19,7 @@ const vizComponents = {
   gauge: GaugePreview,
   bar: BarPiePreview,
   pie: BarPiePreview,
+  route: RoutePreview,
 }
 
 const timeLabel = computed(() => {

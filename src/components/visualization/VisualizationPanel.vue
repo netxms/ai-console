@@ -6,6 +6,7 @@ import ChartView from './ChartView.vue'
 import TableView from './TableView.vue'
 import GaugeView from './GaugeView.vue'
 import BarPieView from './BarPieView.vue'
+import RouteView from './RouteView.vue'
 
 const vizStore = useVisualizationStore()
 const contentEl = ref(null)
@@ -17,6 +18,7 @@ const viewComponents = {
   gauge: GaugeView,
   bar: BarPieView,
   pie: BarPieView,
+  route: RouteView,
 }
 </script>
 
