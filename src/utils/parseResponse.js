@@ -10,6 +10,28 @@
 
 let vizCounter = 0
 
+/**
+ * Convert Unix-seconds timestamps to milliseconds in chart series data.
+ * ECharts time axis expects milliseconds; the LLM encodes ISO timestamps
+ * as Unix time in seconds.
+ */
+function normalizeTimestamps(viz) {
+  if (!viz.series) return
+  for (const s of viz.series) {
+    if (!Array.isArray(s.data)) continue
+    s.data = s.data.map((point) => {
+      if (!Array.isArray(point) || point.length < 2) return point
+      const ts = point[0]
+      // Timestamps below 1e11 are in seconds (before year 5138 in seconds,
+      // but only 1973 in milliseconds), so convert to milliseconds
+      if (typeof ts === 'number' && ts > 0 && ts < 1e11) {
+        return [ts * 1000, ...point.slice(1)]
+      }
+      return point
+    })
+  }
+}
+
 export function parseResponse(raw) {
   if (!raw) return [{ type: 'text', content: '' }]
 
@@ -30,6 +52,9 @@ export function parseResponse(raw) {
       const viz = JSON.parse(match[1].trim())
       if (viz.type) {
         viz.id = viz.id || `viz-${++vizCounter}`
+        if (viz.type === 'chart' || viz.type === 'bar') {
+          normalizeTimestamps(viz)
+        }
         blocks.push(viz)
       } else {
         // Invalid viz block — render as text
