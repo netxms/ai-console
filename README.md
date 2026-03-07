@@ -4,9 +4,9 @@ An AI-powered web console for [NetXMS](https://www.netxms.org/) infrastructure m
 
 ## Screenshots
 
-<img src="src/screenshots/ai-console-light.png" alt="AI Console — light theme" width="800">
+<img src="doc/screenshots/ai-console-light.png" alt="AI Console — light theme" width="800">
 
-<img src="src/screenshots/ai-console-dark.png" alt="AI Console — dark theme" width="800">
+<img src="doc/screenshots/ai-console-dark.png" alt="AI Console — dark theme" width="800">
 
 _Chat interface with inline chart previews on the left, full interactive visualization panel on the right._
 
