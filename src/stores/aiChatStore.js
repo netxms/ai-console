@@ -28,13 +28,13 @@ export const useAiChatStore = defineStore('aiChat', () => {
   }
 
   async function sendMessage(text) {
-    messages.value.push({ role: 'user', content: text, timestamp: Date.now() })
     processing.value = true
     error.value = null
     pendingQuestion.value = null
 
     try {
       if (!chatId.value) await createSession()
+      messages.value.push({ role: 'user', content: text, timestamp: Date.now() })
       await aiChatApi.sendMessage(chatId.value, text)
       await pollForResponse()
     } catch (err) {

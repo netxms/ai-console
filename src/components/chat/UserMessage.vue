@@ -19,6 +19,9 @@ const timeLabel = computed(() => {
       {{ content }}
       <span v-if="timeLabel" class="msg-time">{{ timeLabel }}</span>
     </div>
+    <div class="user-avatar">
+      <i class="pi pi-user" />
+    </div>
   </div>
 </template>
 
@@ -26,6 +29,22 @@ const timeLabel = computed(() => {
 .user-message {
   display: flex;
   justify-content: flex-end;
+  gap: 0.625rem;
+  align-items: flex-start;
+}
+
+.user-avatar {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--p-primary-color);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  margin-top: 2px;
 }
 
 .user-bubble {
