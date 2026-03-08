@@ -82,3 +82,16 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.aggregated-badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--sem-info);
+  border: 1px solid var(--sem-info);
+  border-radius: 4px;
+  padding: 0.05rem 0.35rem;
+  margin-left: auto;
+  line-height: 1.4;
+}

@@ -11,6 +11,7 @@ const chartRef = ref(null)
 const loading = ref(true)
 const error = ref(null)
 const chartData = ref(null)
+const aggregated = ref(false)
 
 onMounted(async () => {
    try {
@@ -19,11 +20,13 @@ onMounted(async () => {
          dciId: props.data.dciId,
          label: props.data.label,
       }]
-      chartData.value = await fetchDciChartData(seriesConfig, {
+      const result = await fetchDciChartData(seriesConfig, {
          timeFrom: props.data.timeFrom,
          timeTo: props.data.timeTo,
          timeRange: props.data.timeRange,
       })
+      chartData.value = result
+      aggregated.value = result.aggregated
    } catch (e) {
       error.value = e.message
    } finally {
@@ -89,7 +92,10 @@ defineExpose({ chartRef })
          <i class="pi pi-exclamation-triangle" />
          <span>Failed to load data: {{ error }}</span>
       </div>
-      <VChart v-else-if="option" ref="chartRef" :option="option" class="chart-full" autoresize />
+      <template v-else-if="option">
+         <span v-if="aggregated" class="aggregated-badge">aggregated</span>
+         <VChart ref="chartRef" :option="option" class="chart-full" autoresize />
+      </template>
    </div>
 </template>
 

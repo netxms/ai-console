@@ -12,6 +12,7 @@ const vizStore = useVisualizationStore()
 const loading = ref(true)
 const error = ref(null)
 const chartData = ref(null)
+const aggregated = ref(false)
 
 onMounted(async () => {
    try {
@@ -20,12 +21,14 @@ onMounted(async () => {
          dciId: props.data.dciId,
          label: props.data.label,
       }]
-      chartData.value = await fetchDciChartData(seriesConfig, {
+      const result = await fetchDciChartData(seriesConfig, {
          timeFrom: props.data.timeFrom,
          timeTo: props.data.timeTo,
          timeRange: props.data.timeRange,
          maxDataPoints: 200,
       })
+      chartData.value = result
+      aggregated.value = result.aggregated
    } catch (e) {
       error.value = e.message
    } finally {
@@ -68,6 +71,7 @@ function openTab() {
       <div class="preview-header">
          <i class="pi pi-chart-line" />
          <span>{{ data.title || 'DCI Chart' }}</span>
+         <span v-if="aggregated" class="aggregated-badge">aggregated</span>
          <i class="pi pi-external-link preview-link" />
       </div>
       <div v-if="loading" class="preview-loading">

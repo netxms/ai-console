@@ -35,6 +35,8 @@ export async function fetchDciChartData(seriesConfig, { timeFrom, timeTo, timeRa
    const resolved = resolveTimeRange({ timeFrom, timeTo, timeRange })
    const entries = Array.isArray(seriesConfig) ? seriesConfig : [seriesConfig]
 
+   let aggregated = false
+
    const results = await Promise.all(entries.map(async (entry) => {
       const params = new URLSearchParams()
       if (resolved.timeFrom) params.set('timeFrom', resolved.timeFrom)
@@ -44,6 +46,10 @@ export async function fetchDciChartData(seriesConfig, { timeFrom, timeTo, timeRa
       const qs = params.toString()
       const path = `/v1/objects/${entry.nodeId}/data-collection/${entry.dciId}/history${qs ? '?' + qs : ''}`
       const response = await get(path)
+
+      if (response.aggregated) {
+         aggregated = true
+      }
 
       const data = (response.values || []).map((point) => {
          const ts = typeof point.timestamp === 'string'
@@ -65,5 +71,5 @@ export async function fetchDciChartData(seriesConfig, { timeFrom, timeTo, timeRa
       }
    }))
 
-   return { series: results }
+   return { series: results, aggregated }
 }

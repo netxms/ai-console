@@ -73,7 +73,10 @@ defineExpose({ chartRef })
       <i class="pi pi-exclamation-triangle" />
       <span>Failed to render chart: {{ error }}</span>
     </div>
-    <VChart v-else-if="option" ref="chartRef" :option="option" class="chart-full" autoresize />
+    <template v-else-if="option">
+      <span v-if="data.aggregated" class="aggregated-badge">aggregated</span>
+      <VChart ref="chartRef" :option="option" class="chart-full" autoresize />
+    </template>
   </div>
 </template>
 

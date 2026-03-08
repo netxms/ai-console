@@ -44,6 +44,7 @@ function openTab() {
     <div class="preview-header">
       <i class="pi pi-chart-line" />
       <span>{{ data.title || 'Chart' }}</span>
+      <span v-if="data.aggregated" class="aggregated-badge">aggregated</span>
       <i class="pi pi-external-link preview-link" />
     </div>
     <div v-if="error" class="viz-error">
