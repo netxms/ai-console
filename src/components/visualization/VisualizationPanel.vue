@@ -8,6 +8,7 @@ import GaugeView from './GaugeView.vue'
 import BarPieView from './BarPieView.vue'
 import RouteView from './RouteView.vue'
 import DciChartView from './DciChartView.vue'
+import MapView from './MapView.vue'
 
 const vizStore = useVisualizationStore()
 const contentEl = ref(null)
@@ -21,6 +22,7 @@ const viewComponents = {
   pie: BarPieView,
   route: RouteView,
   'dci-chart': DciChartView,
+  map: MapView,
 }
 </script>
 

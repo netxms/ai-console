@@ -53,7 +53,7 @@ document.addEventListener('fullscreenchange', () => {
       @click="toggleFullscreen"
     />
     <Button
-      v-if="type !== 'table'"
+      v-if="type !== 'table' && type !== 'map' && type !== 'route'"
       icon="pi pi-image"
       severity="secondary"
       text
@@ -62,7 +62,7 @@ document.addEventListener('fullscreenchange', () => {
       @click="exportPng"
     />
     <Button
-      v-if="type === 'table'"
+      v-if="type === 'table' || type === 'map'"
       icon="pi pi-copy"
       severity="secondary"
       text

@@ -7,6 +7,7 @@ import GaugePreview from '@/components/visualization/GaugePreview.vue'
 import BarPiePreview from '@/components/visualization/BarPiePreview.vue'
 import RoutePreview from '@/components/visualization/RoutePreview.vue'
 import DciChartPreview from '@/components/visualization/DciChartPreview.vue'
+import MapPreview from '@/components/visualization/MapPreview.vue'
 
 const props = defineProps({
   blocks: { type: Array, required: true },
@@ -22,6 +23,7 @@ const vizComponents = {
   pie: BarPiePreview,
   route: RoutePreview,
   'dci-chart': DciChartPreview,
+  map: MapPreview,
 }
 
 const timeLabel = computed(() => {
