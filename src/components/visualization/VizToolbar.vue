@@ -37,6 +37,10 @@ function copyCsv() {
   navigator.clipboard.writeText(csv)
 }
 
+function resetView() {
+  if (props.viewRef?.resetView) props.viewRef.resetView()
+}
+
 document.addEventListener('fullscreenchange', () => {
   isFullscreen.value = !!document.fullscreenElement
 })
@@ -60,6 +64,15 @@ document.addEventListener('fullscreenchange', () => {
       size="small"
       v-tooltip.bottom="'Export PNG'"
       @click="exportPng"
+    />
+    <Button
+      v-if="type === 'map'"
+      icon="pi pi-replay"
+      severity="secondary"
+      text
+      size="small"
+      v-tooltip.bottom="'Reset View'"
+      @click="resetView"
     />
     <Button
       v-if="type === 'table' || type === 'map'"

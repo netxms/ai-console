@@ -24,7 +24,7 @@ _Chat interface with inline chart previews on the left, full interactive visuali
 
 - **Node.js** 20.19+ or 22.12+
 - **Yarn** package manager
-- A running **NetXMS server** (5.1+) with AI chat API enabled
+- A running **NetXMS server** (6.1+) with web API enabled
 
 ## Quick Start
 
@@ -108,4 +108,4 @@ The chat panel takes full width when no visualizations are open. When a visualiz
 
 ## License
 
-This project is part of [NetXMS](https://www.netxms.org/) and is licensed under the GNU General Public License v2.
+This project is part of [NetXMS](https://www.netxms.org/) and is licensed under the GNU General Public License v3.

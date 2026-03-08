@@ -8,6 +8,11 @@ export const useVisualizationStore = defineStore('visualization', () => {
   const activeTab = computed(() => tabs.value.find((t) => t.id === activeTabId.value) || null)
 
   function addTab(visualization) {
+    const existing = tabs.value.find((t) => t.id === visualization.id)
+    if (existing) {
+      activeTabId.value = visualization.id
+      return
+    }
     tabs.value.push(visualization)
     activeTabId.value = visualization.id
   }

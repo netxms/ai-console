@@ -12,6 +12,7 @@ const props = defineProps({
 const mapContainer = ref(null)
 const error = ref(null)
 let map = null
+let initialView = null
 
 const statusColors = {
    normal: 'var(--p-green-500)',
@@ -78,10 +79,13 @@ async function initMap() {
       }
 
       if (props.data.center && props.data.zoom != null) {
+         initialView = { center: props.data.center, zoom: props.data.zoom }
          map.setView(props.data.center, props.data.zoom)
       } else if (bounds.length > 0) {
+         initialView = { bounds, padding: [32, 32] }
          map.fitBounds(bounds, { padding: [32, 32] })
       } else {
+         initialView = { center: [0, 0], zoom: 2 }
          map.setView([0, 0], 2)
       }
    } catch (e) {
@@ -118,7 +122,16 @@ function getColumnsAsCsv() {
    return header + '\n' + body
 }
 
-defineExpose({ getColumnsAsCsv })
+function resetView() {
+   if (!map || !initialView) return
+   if (initialView.bounds) {
+      map.fitBounds(initialView.bounds, { padding: initialView.padding })
+   } else {
+      map.setView(initialView.center, initialView.zoom)
+   }
+}
+
+defineExpose({ getColumnsAsCsv, resetView })
 
 onMounted(initMap)
 
