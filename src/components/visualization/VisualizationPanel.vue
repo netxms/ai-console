@@ -7,6 +7,7 @@ import TableView from './TableView.vue'
 import GaugeView from './GaugeView.vue'
 import BarPieView from './BarPieView.vue'
 import RouteView from './RouteView.vue'
+import DciChartView from './DciChartView.vue'
 
 const vizStore = useVisualizationStore()
 const contentEl = ref(null)
@@ -19,6 +20,7 @@ const viewComponents = {
   bar: BarPieView,
   pie: BarPieView,
   route: RouteView,
+  'dci-chart': DciChartView,
 }
 </script>
 
