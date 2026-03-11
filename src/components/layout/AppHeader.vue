@@ -7,6 +7,7 @@ import { useAiChatStore } from '@/stores/aiChatStore'
 import { useVisualizationStore } from '@/stores/visualizationStore'
 import { useThemeStore } from '@/stores/themeStore'
 import { useRouter } from 'vue-router'
+import { brand } from '@/brands'
 
 const authStore = useAuthStore()
 const themeStore = useThemeStore()
@@ -42,8 +43,8 @@ function handleLogout() {
   <header class="app-header">
     <div class="header-left">
       <span class="header-title">
-        <img src="/netxms-icon.png" alt="NetXMS" class="header-logo" />
-        AI Console
+        <img :src="brand.icon" :alt="brand.name" class="header-logo" />
+        {{ brand.title }}
       </span>
     </div>
     <div class="header-right">

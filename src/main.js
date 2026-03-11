@@ -17,6 +17,7 @@ import {
 
 import App from './App.vue'
 import router from './router'
+import { brand } from '@/brands'
 
 import 'primeicons/primeicons.css'
 import '@/assets/styles/main.css'
@@ -49,5 +50,29 @@ app.use(PrimeVue, {
 app.use(ToastService)
 
 app.directive('tooltip', Tooltip)
+
+// Apply brand colors as CSS custom properties
+function applyBrandColors(theme, root) {
+  root.style.setProperty('--bg', theme.bg)
+  root.style.setProperty('--surface', theme.surface)
+  root.style.setProperty('--surface-2', theme.surface2)
+  root.style.setProperty('--border', theme.border)
+  root.style.setProperty('--text-primary', theme.textPrimary)
+  root.style.setProperty('--text-secondary', theme.textSecondary)
+  root.style.setProperty('--text-muted', theme.textMuted)
+  root.style.setProperty('--accent', theme.accent)
+}
+
+const root = document.documentElement
+applyBrandColors(brand.light, root)
+
+// Re-apply when dark mode toggles
+const observer = new MutationObserver(() => {
+  const isDark = root.classList.contains('app-dark')
+  applyBrandColors(isDark ? brand.dark : brand.light, root)
+})
+observer.observe(root, { attributes: true, attributeFilter: ['class'] })
+
+document.title = `${brand.name} ${brand.title}`
 
 app.mount('#app')

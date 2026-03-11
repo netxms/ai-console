@@ -6,6 +6,7 @@ import Password from 'primevue/password'
 import Button from 'primevue/button'
 import Message from 'primevue/message'
 import { useAuthStore } from '@/stores/authStore'
+import { brand } from '@/brands'
 
 const router = useRouter()
 const route = useRoute()
@@ -26,8 +27,8 @@ async function handleLogin() {
   <div class="login-page">
     <form class="login-form" @submit.prevent="handleLogin">
       <div class="login-header">
-        <img src="/netxms-logo.png" alt="NetXMS" class="login-logo" />
-        <span class="login-subtitle">AI Console</span>
+        <img :src="brand.logo" :alt="brand.name" class="login-logo" />
+        <span class="login-subtitle">{{ brand.title }}</span>
       </div>
 
       <Message v-if="authStore.error" severity="error" :closable="false">

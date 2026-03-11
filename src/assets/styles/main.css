@@ -4,25 +4,9 @@
   --app-font-size: 14px;
   --app-line-height: 1.5;
 
-  /* NetXMS brand tokens — theme-independent */
-  --nx-red:        #E82400;
-  --nx-red-mid:    #F53A0A;
-  --nx-vermillion: #FB5010;
-  --nx-orange-red: #FC6608;
-  --nx-orange:     #FD7D05;
-  --nx-amber:      #FE9403;
-  --nx-gold:       #FFAA00;
-  --nx-gradient:   linear-gradient(135deg, #E82400 0%, #FD7D05 55%, #FFAA00 100%);
+  /* Brand colors — set dynamically from src/brands/ */
 
-  /* Warm light theme (default) */
-  --bg:             #FFFCFB;
-  --surface:        #FFFFFF;
-  --surface-2:      #FFF3EE;
-  --border:         rgba(180, 90, 30, 0.13);
-  --text-primary:   #1A0A04;
-  --text-secondary: #7A4E3A;
-  --text-muted:     #B08070;
-  --accent:         #C85A00;
+  /* Semantic colors — theme-independent */
   --sem-success:    #1A9E56;
   --sem-warning:    #C87800;
   --sem-danger:     #C41F00;
@@ -36,27 +20,16 @@
   --p-surface-border: var(--border);
   --p-surface-hover: var(--surface-2);
   --p-primary-color: var(--accent);
-  --p-primary-contrast-color: #ffffff;
+  --p-primary-contrast-color: var(--bg);
 
   --header-height: 48px;
 }
 
 .app-dark {
-  /* Cold dark theme — blue-black neutrals */
-  --bg:             #0E1220;
-  --surface:        #1A2030;
-  --surface-2:      #222840;
-  --border:         rgba(100, 140, 255, 0.10);
-  --text-primary:   #A8B0C8;
-  --text-secondary: #6E7A9A;
-  --text-muted:     #3E4A68;
-  --accent:         #FD7D05;
   --sem-success:    #2DBD6E;
   --sem-warning:    #F5A623;
   --sem-danger:     #E82400;
   --sem-info:       #38AAEE;
-
-  --p-primary-contrast-color: #0E1220;
 }
 
 *,
