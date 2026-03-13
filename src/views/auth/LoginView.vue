@@ -1,16 +1,19 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
 import Button from 'primevue/button'
 import Message from 'primevue/message'
 import { useAuthStore } from '@/stores/authStore'
+import { useThemeStore } from '@/stores/themeStore'
 import { brand } from '@/brands'
 
 const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
+const themeStore = useThemeStore()
+const loginLogo = computed(() => themeStore.dark ? brand.logoDark : brand.logo)
 
 const username = ref('')
 const password = ref('')
@@ -27,7 +30,7 @@ async function handleLogin() {
   <div class="login-page">
     <form class="login-form" @submit.prevent="handleLogin">
       <div class="login-header">
-        <img :src="brand.logo" :alt="brand.name" class="login-logo" />
+        <img :src="loginLogo" :alt="brand.name" class="login-logo" />
         <span class="login-subtitle">{{ brand.title }}</span>
       </div>
 

@@ -5,7 +5,9 @@ export default {
    name: 'NetXMS',
    title: 'AI Console',
    logo,
+   logoDark: logo,
    icon,
+   iconDark: icon,
    palette: {
       50: '#FFF3EE',
       100: '#FFE4D6',

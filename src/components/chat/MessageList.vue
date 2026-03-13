@@ -3,6 +3,7 @@ import { ref, watch, nextTick } from 'vue'
 import UserMessage from './UserMessage.vue'
 import AssistantMessage from './AssistantMessage.vue'
 import ProcessingIndicator from './ProcessingIndicator.vue'
+import { brand } from '@/brands'
 
 const props = defineProps({
   messages: { type: Array, required: true },
@@ -26,7 +27,7 @@ watch(
   <div ref="container" class="message-list">
     <div v-if="messages.length === 0" class="empty-state">
       <i class="pi pi-sparkles empty-icon" />
-      <p class="empty-title">NetXMS AI Console</p>
+      <p class="empty-title">{{ brand.name }} {{ brand.title }}</p>
       <p class="empty-hint">Ask anything about your infrastructure</p>
     </div>
 

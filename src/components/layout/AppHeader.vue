@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 import { useAuthStore } from '@/stores/authStore'
@@ -15,6 +15,7 @@ const chatStore = useAiChatStore()
 const vizStore = useVisualizationStore()
 const router = useRouter()
 
+const headerIcon = computed(() => themeStore.dark ? brand.iconDark : brand.icon)
 const showConfirm = ref(false)
 
 function handleNewChat() {
@@ -43,7 +44,7 @@ function handleLogout() {
   <header class="app-header">
     <div class="header-left">
       <span class="header-title">
-        <img :src="brand.icon" :alt="brand.name" class="header-logo" />
+        <img :src="headerIcon" :alt="brand.name" class="header-logo" />
         {{ brand.title }}
       </span>
     </div>

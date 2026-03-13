@@ -7,6 +7,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, fileURLToPath(new URL('.', import.meta.url)), 'VITE_')
 
   return {
+    base: env.VITE_BASE_URL || '/',
     plugins: [vue()],
     resolve: {
       alias: {
