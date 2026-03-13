@@ -8,6 +8,7 @@ import { brand } from '@/brands'
 const props = defineProps({
   messages: { type: Array, required: true },
   processing: { type: Boolean, default: false },
+  currentFunction: { type: String, default: null },
 })
 
 const container = ref(null)
@@ -41,7 +42,7 @@ watch(
       />
     </template>
 
-    <ProcessingIndicator v-if="processing" />
+    <ProcessingIndicator v-if="processing" :function-name="currentFunction" />
   </div>
 </template>
 

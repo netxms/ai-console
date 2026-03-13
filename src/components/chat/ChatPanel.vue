@@ -24,6 +24,7 @@ function handleSend(text) {
     <MessageList
       :messages="chatStore.messages"
       :processing="chatStore.processing"
+      :current-function="chatStore.currentFunction"
       class="chat-messages"
     />
     <PendingQuestion

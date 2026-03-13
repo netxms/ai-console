@@ -7,6 +7,7 @@ export const useAiChatStore = defineStore('aiChat', () => {
   const chatId = ref(null)
   const messages = ref([])
   const processing = ref(false)
+  const currentFunction = ref(null)
   const error = ref(null)
   const pendingQuestion = ref(null)
 
@@ -29,6 +30,7 @@ export const useAiChatStore = defineStore('aiChat', () => {
 
   async function sendMessage(text) {
     processing.value = true
+    currentFunction.value = null
     error.value = null
     pendingQuestion.value = null
 
@@ -39,6 +41,7 @@ export const useAiChatStore = defineStore('aiChat', () => {
       await pollForResponse()
     } catch (err) {
       processing.value = false
+      currentFunction.value = null
       error.value = err.message
       messages.value.push({
         role: 'assistant',
@@ -58,6 +61,7 @@ export const useAiChatStore = defineStore('aiChat', () => {
 
         if (data.status === 'completed') {
           processing.value = false
+          currentFunction.value = null
           pendingQuestion.value = null
           messages.value.push({
             role: 'assistant',
@@ -68,6 +72,7 @@ export const useAiChatStore = defineStore('aiChat', () => {
         }
 
         if (data.status === 'processing') {
+          currentFunction.value = data.currentFunction || null
           if (data.pendingQuestion) {
             pendingQuestion.value = data.pendingQuestion
           }
@@ -77,8 +82,10 @@ export const useAiChatStore = defineStore('aiChat', () => {
 
         // idle
         processing.value = false
+        currentFunction.value = null
       } catch (err) {
         processing.value = false
+        currentFunction.value = null
         error.value = err.message
       }
     }
@@ -115,6 +122,7 @@ export const useAiChatStore = defineStore('aiChat', () => {
     }
     messages.value = []
     processing.value = false
+    currentFunction.value = null
     error.value = null
     pendingQuestion.value = null
   }
@@ -127,6 +135,7 @@ export const useAiChatStore = defineStore('aiChat', () => {
     chatId.value = null
     messages.value = []
     processing.value = false
+    currentFunction.value = null
     error.value = null
     pendingQuestion.value = null
   }
@@ -135,6 +144,7 @@ export const useAiChatStore = defineStore('aiChat', () => {
     chatId,
     messages,
     processing,
+    currentFunction,
     error,
     pendingQuestion,
     hasChat,
