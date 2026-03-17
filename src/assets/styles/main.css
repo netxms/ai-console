@@ -4,13 +4,34 @@
   --app-font-size: 14px;
   --app-line-height: 1.5;
 
-  /* Brand colors — set dynamically from src/brands/ */
+  /* Brand gradient & colors */
+  --nx-red:        #E82400;
+  --nx-red-mid:    #F53A0A;
+  --nx-vermillion: #FB5010;
+  --nx-orange-red: #FC6608;
+  --nx-orange:     #FD7D05;
+  --nx-amber:      #FE9403;
+  --nx-gold:       #FFAA00;
+  --nx-gradient:   linear-gradient(135deg, #E82400 0%, #FD7D05 55%, #FFAA00 100%);
 
-  /* Semantic colors — theme-independent */
-  --sem-success:    #1A9E56;
-  --sem-warning:    #C87800;
-  --sem-danger:     #C41F00;
-  --sem-info:       #1579B8;
+  /* Severity — theme-independent */
+  --sev-normal:    #2DBD6E;
+  --sev-warning:   #C8D400;
+  --sev-minor:     #F5C800;
+  --sev-major:     #E85000;
+  --sev-critical:  #D42000;
+
+  /* Object status extras */
+  --sta-unknown:   #38AAEE;
+  --sta-unmanaged: #6C7A96;
+  --sta-disabled:  #4E5870;
+  --sta-testing:   #5C6880;
+
+  /* Semantic colors — theme-independent (mapped from severity/status) */
+  --sem-success:    #2DBD6E;
+  --sem-warning:    #E85000;
+  --sem-danger:     #D42000;
+  --sem-info:       #38AAEE;
 
   /* PrimeVue surface tokens */
   --p-text-color: var(--text-primary);
@@ -25,12 +46,8 @@
   --header-height: 48px;
 }
 
-.app-dark {
-  --sem-success:    #2DBD6E;
-  --sem-warning:    #F5A623;
-  --sem-danger:     #E82400;
-  --sem-info:       #38AAEE;
-}
+/* Dark-mode semantic overrides no longer needed —
+   severity & status colors are theme-independent */
 
 *,
 *::before,
