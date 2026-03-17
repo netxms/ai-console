@@ -63,9 +63,34 @@ export const useAiChatStore = defineStore('aiChat', () => {
           processing.value = false
           currentFunction.value = null
           pendingQuestion.value = null
+          if (data.errorMessage) {
+            error.value = data.errorMessage
+            messages.value.push({
+              role: 'assistant',
+              blocks: [{ type: 'text', content: `Error: ${data.errorMessage}` }],
+              isError: true,
+              timestamp: Date.now(),
+            })
+          } else {
+            messages.value.push({
+              role: 'assistant',
+              blocks: parseResponse(data.response || ''),
+              timestamp: Date.now(),
+            })
+          }
+          return
+        }
+
+        if (data.status === 'error') {
+          processing.value = false
+          currentFunction.value = null
+          pendingQuestion.value = null
+          const msg = data.errorMessage || data.message || 'Unknown error occurred'
+          error.value = msg
           messages.value.push({
             role: 'assistant',
-            blocks: parseResponse(data.response || ''),
+            blocks: [{ type: 'text', content: `Error: ${msg}` }],
+            isError: true,
             timestamp: Date.now(),
           })
           return
@@ -87,6 +112,12 @@ export const useAiChatStore = defineStore('aiChat', () => {
         processing.value = false
         currentFunction.value = null
         error.value = err.message
+        messages.value.push({
+          role: 'assistant',
+          blocks: [{ type: 'text', content: `Error: ${err.message}` }],
+          isError: true,
+          timestamp: Date.now(),
+        })
       }
     }
 
