@@ -22,6 +22,10 @@ async function toggleFullscreen() {
 }
 
 function exportPng() {
+  if (props.viewRef?.exportPng) {
+    props.viewRef.exportPng()
+    return
+  }
   const chart = props.viewRef?.chartRef
   if (!chart) return
   const url = chart.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: '#fff' })
@@ -57,7 +61,7 @@ document.addEventListener('fullscreenchange', () => {
       @click="toggleFullscreen"
     />
     <Button
-      v-if="type !== 'table' && type !== 'map' && type !== 'route'"
+      v-if="type !== 'table' && type !== 'map' && type !== 'route' && type !== 'sparkline-grid'"
       icon="pi pi-image"
       severity="secondary"
       text
@@ -75,7 +79,7 @@ document.addEventListener('fullscreenchange', () => {
       @click="resetView"
     />
     <Button
-      v-if="type === 'table' || type === 'map'"
+      v-if="type === 'table' || type === 'map' || type === 'route' || type === 'sparkline-grid'"
       icon="pi pi-copy"
       severity="secondary"
       text

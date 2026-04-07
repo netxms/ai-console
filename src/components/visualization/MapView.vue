@@ -4,6 +4,7 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useServerInfoStore } from '@/stores/serverInfoStore'
 import { createTileLayer } from '@/utils/tileUrl'
+import { getStatusColor } from '@/utils/statusColors'
 
 const props = defineProps({
    data: { type: Object, required: true },
@@ -14,20 +15,8 @@ const error = ref(null)
 let map = null
 let initialView = null
 
-const statusColors = {
-   normal: 'var(--p-green-500)',
-   warning: 'var(--p-yellow-500)',
-   minor: 'var(--p-orange-400)',
-   major: 'var(--p-orange-600)',
-   critical: 'var(--p-red-500)',
-}
-
-function markerColor(status) {
-   return statusColors[status] || 'var(--p-primary-color)'
-}
-
 function createMarkerIcon(status) {
-   const color = markerColor(status)
+   const color = getStatusColor(status)
    return L.divIcon({
       className: 'map-marker-icon',
       html: `<svg width="28" height="38" viewBox="0 0 28 38" xmlns="http://www.w3.org/2000/svg">

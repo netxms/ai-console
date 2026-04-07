@@ -4,6 +4,9 @@ import UserMessage from './UserMessage.vue'
 import AssistantMessage from './AssistantMessage.vue'
 import ProcessingIndicator from './ProcessingIndicator.vue'
 import { brand } from '@/brands'
+import { useAiChatStore } from '@/stores/aiChatStore'
+
+const chatStore = useAiChatStore()
 
 const props = defineProps({
   messages: { type: Array, required: true },
@@ -29,7 +32,11 @@ watch(
     <div v-if="messages.length === 0" class="empty-state">
       <i class="pi pi-sparkles empty-icon" />
       <p class="empty-title">{{ brand.name }} {{ brand.title }}</p>
-      <p class="empty-hint">Ask anything about your infrastructure</p>
+      <p class="empty-hint">
+        {{ chatStore.contextObject
+          ? `Ask about ${chatStore.contextObject.object_name || 'this object'}...`
+          : 'Ask anything about your infrastructure' }}
+      </p>
     </div>
 
     <template v-for="(msg, i) in messages" :key="i">

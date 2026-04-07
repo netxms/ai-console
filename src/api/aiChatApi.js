@@ -4,8 +4,10 @@ export function createChat() {
   return post('/v1/ai/chat', { capabilities: ['visualizations'] })
 }
 
-export function sendMessage(chatId, message) {
-  return post(`/v1/ai/chat/${chatId}/message`, { message })
+export function sendMessage(chatId, message, context = null) {
+  const body = { message }
+  if (context) body.context = context
+  return post(`/v1/ai/chat/${chatId}/message`, body)
 }
 
 export function getStatus(chatId) {

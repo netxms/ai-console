@@ -1,11 +1,23 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import ChatPanel from '@/components/chat/ChatPanel.vue'
 import VisualizationPanel from '@/components/visualization/VisualizationPanel.vue'
 import { useVisualizationStore } from '@/stores/visualizationStore'
+import { useAiChatStore } from '@/stores/aiChatStore'
 
+const route = useRoute()
 const vizStore = useVisualizationStore()
+const chatStore = useAiChatStore()
 const hasVisualizations = computed(() => vizStore.tabs.length > 0)
+
+onMounted(() => {
+   const objectId = route.query.objectId ? parseInt(route.query.objectId, 10) : null
+   const objectName = route.query.objectName || null
+   if (objectId) {
+      chatStore.setContext(objectId, objectName)
+   }
+})
 </script>
 
 <template>

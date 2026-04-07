@@ -9,6 +9,9 @@ import BarPieView from './BarPieView.vue'
 import RouteView from './RouteView.vue'
 import DciChartView from './DciChartView.vue'
 import MapView from './MapView.vue'
+import HeatmapView from './HeatmapView.vue'
+import SparklineGridView from './SparklineGridView.vue'
+import TopologyView from './TopologyView.vue'
 
 const vizStore = useVisualizationStore()
 const contentEl = ref(null)
@@ -23,6 +26,9 @@ const viewComponents = {
   route: RouteView,
   'dci-chart': DciChartView,
   map: MapView,
+  heatmap: HeatmapView,
+  'sparkline-grid': SparklineGridView,
+  topology: TopologyView,
 }
 </script>
 

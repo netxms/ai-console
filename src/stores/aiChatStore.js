@@ -10,6 +10,8 @@ export const useAiChatStore = defineStore('aiChat', () => {
   const currentFunction = ref(null)
   const error = ref(null)
   const pendingQuestion = ref(null)
+  const contextObject = ref(null)
+  const contextSent = ref(false)
 
   let pollTimer = null
 
@@ -37,7 +39,9 @@ export const useAiChatStore = defineStore('aiChat', () => {
     try {
       if (!chatId.value) await createSession()
       messages.value.push({ role: 'user', content: text, timestamp: Date.now() })
-      await aiChatApi.sendMessage(chatId.value, text)
+      const context = (!contextSent.value && contextObject.value) ? contextObject.value : null
+      await aiChatApi.sendMessage(chatId.value, text, context)
+      if (context) contextSent.value = true
       await pollForResponse()
     } catch (err) {
       processing.value = false
@@ -146,6 +150,24 @@ export const useAiChatStore = defineStore('aiChat', () => {
     }
   }
 
+  function setContext(objectId, objectName) {
+    if (objectId) {
+      const newContext = { type: 'object', object_name: objectName, object_id: objectId }
+      const changed = !contextObject.value
+        || contextObject.value.object_id !== objectId
+      contextObject.value = newContext
+      if (changed) contextSent.value = false
+    } else {
+      contextObject.value = null
+      contextSent.value = false
+    }
+  }
+
+  function clearContext() {
+    contextObject.value = null
+    contextSent.value = false
+  }
+
   async function clearSession() {
     stopPolling()
     if (chatId.value) {
@@ -156,6 +178,7 @@ export const useAiChatStore = defineStore('aiChat', () => {
     currentFunction.value = null
     error.value = null
     pendingQuestion.value = null
+    contextSent.value = false
   }
 
   async function newSession() {
@@ -169,6 +192,7 @@ export const useAiChatStore = defineStore('aiChat', () => {
     currentFunction.value = null
     error.value = null
     pendingQuestion.value = null
+    contextSent.value = false
   }
 
   return {
@@ -179,10 +203,13 @@ export const useAiChatStore = defineStore('aiChat', () => {
     error,
     pendingQuestion,
     hasChat,
+    contextObject,
     createSession,
     sendMessage,
     answerQuestion,
     clearSession,
     newSession,
+    setContext,
+    clearContext,
   }
 })

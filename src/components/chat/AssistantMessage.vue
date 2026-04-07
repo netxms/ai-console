@@ -8,6 +8,9 @@ import BarPiePreview from '@/components/visualization/BarPiePreview.vue'
 import RoutePreview from '@/components/visualization/RoutePreview.vue'
 import DciChartPreview from '@/components/visualization/DciChartPreview.vue'
 import MapPreview from '@/components/visualization/MapPreview.vue'
+import HeatmapPreview from '@/components/visualization/HeatmapPreview.vue'
+import SparklineGridPreview from '@/components/visualization/SparklineGridPreview.vue'
+import TopologyPreview from '@/components/visualization/TopologyPreview.vue'
 
 const props = defineProps({
   blocks: { type: Array, required: true },
@@ -24,6 +27,9 @@ const vizComponents = {
   route: RoutePreview,
   'dci-chart': DciChartPreview,
   map: MapPreview,
+  heatmap: HeatmapPreview,
+  'sparkline-grid': SparklineGridPreview,
+  topology: TopologyPreview,
 }
 
 const timeLabel = computed(() => {

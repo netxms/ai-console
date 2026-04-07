@@ -6,13 +6,14 @@ import Tooltip from 'primevue/tooltip'
 import { themePreset } from '@/themes'
 import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
-import { LineChart, BarChart, PieChart, GaugeChart } from 'echarts/charts'
+import { LineChart, BarChart, PieChart, GaugeChart, HeatmapChart } from 'echarts/charts'
 import {
   GridComponent,
   TooltipComponent,
   LegendComponent,
   DataZoomComponent,
   MarkLineComponent,
+  VisualMapComponent,
 } from 'echarts/components'
 
 import App from './App.vue'
@@ -28,11 +29,13 @@ use([
   BarChart,
   PieChart,
   GaugeChart,
+  HeatmapChart,
   GridComponent,
   TooltipComponent,
   LegendComponent,
   DataZoomComponent,
   MarkLineComponent,
+  VisualMapComponent,
 ])
 
 const app = createApp(App)
