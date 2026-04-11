@@ -1,25 +1,23 @@
 <script setup>
 import { computed } from 'vue'
 import { marked } from 'marked'
+import DOMPurify from 'dompurify'
 
 const props = defineProps({
   content: { type: String, required: true },
 })
 
-function sanitize(html) {
-  return html
-    .replace(/<script[\s>][\s\S]*?<\/script>/gi, '')
-    .replace(/<iframe[\s>][\s\S]*?<\/iframe>/gi, '')
-    .replace(/<object[\s>][\s\S]*?<\/object>/gi, '')
-    .replace(/<embed[\s>][\s\S]*?>/gi, '')
-    .replace(/<link[\s>][\s\S]*?>/gi, '')
-    .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
-    .replace(/javascript\s*:/gi, '')
-}
-
 const html = computed(() => {
   const raw = marked.parse(props.content || '', { breaks: true, gfm: true })
-  return sanitize(raw)
+  return DOMPurify.sanitize(raw, {
+    ALLOWED_TAGS: [
+      'p', 'br', 'strong', 'em', 'b', 'i', 'a', 'code', 'pre', 'blockquote',
+      'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+      'table', 'thead', 'tbody', 'tr', 'th', 'td',
+      'img', 'span', 'div', 'hr', 'del', 'sup', 'sub', 'dd', 'dt', 'dl',
+    ],
+    ALLOWED_ATTR: ['href', 'title', 'alt', 'src', 'class'],
+  })
 })
 </script>
 

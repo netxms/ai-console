@@ -21,7 +21,9 @@ const password = ref('')
 async function handleLogin() {
   const success = await authStore.login(username.value, password.value)
   if (success) {
-    router.push(route.query.redirect || '/')
+    const redirect = route.query.redirect
+    const safe = typeof redirect === 'string' && redirect.startsWith('/') && !redirect.startsWith('//')
+    router.push(safe ? redirect : '/')
   }
 }
 </script>
