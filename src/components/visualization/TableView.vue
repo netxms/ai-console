@@ -4,6 +4,7 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Tag from 'primevue/tag'
 import InputText from 'primevue/inputtext'
+import { csvSafe } from '@/utils/csvSafe'
 
 const props = defineProps({
   data: { type: Object, required: true },
@@ -32,13 +33,9 @@ function formatDatetime(value) {
 
 function getColumnsAsCsv() {
   const cols = props.data.columns || []
-  const header = cols.map((c) => c.header).join(',')
+  const header = cols.map((c) => csvSafe(c.header)).join(',')
   const body = rows.value.map((row) =>
-    cols.map((c) => {
-      const val = row[c.field]
-      const str = String(val ?? '')
-      return str.includes(',') || str.includes('"') ? `"${str.replace(/"/g, '""')}"` : str
-    }).join(',')
+    cols.map((c) => csvSafe(row[c.field])).join(',')
   ).join('\n')
   return header + '\n' + body
 }

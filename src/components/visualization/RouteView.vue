@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import Tag from 'primevue/tag'
+import { csvSafe } from '@/utils/csvSafe'
 
 const props = defineProps({
    data: { type: Object, required: true },
@@ -45,7 +46,7 @@ function hopDetail(hop) {
 function getColumnsAsCsv() {
    const header = 'Hop,Node,Node ID,Type,Details'
    const body = hops.value.map((hop, i) =>
-      [i + 1, hop.objectName || '', hop.objectId || '', hop.type || '', hopDetail(hop).replace(/,/g, ';')].join(',')
+      [i + 1, csvSafe(hop.objectName), csvSafe(hop.objectId), csvSafe(hop.type), csvSafe(hopDetail(hop))].join(',')
    ).join('\n')
    return header + '\n' + body
 }

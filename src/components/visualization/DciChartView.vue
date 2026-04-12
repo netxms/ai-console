@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import VChart from 'vue-echarts'
 import { fetchDciChartData } from '@/api/dciApi'
+import { escapeHtml } from '@/utils/escapeHtml'
 
 const props = defineProps({
    data: { type: Object, required: true },
@@ -39,7 +40,7 @@ const option = computed(() => {
    try {
       const d = props.data
       const series = chartData.value.series.map((s) => ({
-         name: s.name,
+         name: escapeHtml(s.name),
          type: 'line',
          areaStyle: d.chartType === 'area' ? { opacity: 0.3 } : undefined,
          data: s.data,

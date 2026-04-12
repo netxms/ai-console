@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import VChart from 'vue-echarts'
+import { escapeHtml } from '@/utils/escapeHtml'
 
 const props = defineProps({
    data: { type: Object, required: true },
@@ -34,7 +35,7 @@ const option = computed(() => {
          tooltip: {
             formatter(params) {
                const [ci, ri, v] = params.data
-               return `<strong>${rows[ri]}, ${cols[ci]}</strong><br/>${v} ${valueLabel}`
+               return `<strong>${escapeHtml(rows[ri])}, ${escapeHtml(cols[ci])}</strong><br/>${v} ${escapeHtml(valueLabel)}`
             },
          },
          grid: { top: 16, right: 80, bottom: 60, left: 80 },

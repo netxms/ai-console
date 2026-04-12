@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import VChart from 'vue-echarts'
+import { escapeHtml } from '@/utils/escapeHtml'
 
 const props = defineProps({
   data: { type: Object, required: true },
@@ -15,7 +16,10 @@ const option = computed(() => {
 
     if (d.type === 'pie') {
       return {
-        tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+        tooltip: {
+          trigger: 'item',
+          formatter: (params) => `${escapeHtml(params.name)}: ${params.value} (${params.percent}%)`,
+        },
         legend: { orient: 'vertical', right: 16, top: 'center' },
         series: [{
           type: 'pie',

@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import VChart from 'vue-echarts'
 import { fetchDciChartData } from '@/api/dciApi'
+import { csvSafe } from '@/utils/csvSafe'
 
 const props = defineProps({
    data: { type: Object, required: true },
@@ -18,10 +19,13 @@ const maxValue = computed(() => {
    return max || 1
 })
 
+const CONCURRENT_FETCHES = 6
+
 onMounted(async () => {
-   const fetches = items.value
-      .filter((item) => item.nodeId && item.dciId)
-      .map(async (item) => {
+   const fetchItems = items.value.filter((item) => item.nodeId && item.dciId)
+   for (let i = 0; i < fetchItems.length; i += CONCURRENT_FETCHES) {
+      const batch = fetchItems.slice(i, i + CONCURRENT_FETCHES)
+      await Promise.all(batch.map(async (item) => {
          try {
             const result = await fetchDciChartData(
                [{ nodeId: item.nodeId, dciId: item.dciId, label: item.label }],
@@ -31,8 +35,8 @@ onMounted(async () => {
          } catch {
             // Silently skip — row will show without sparkline
          }
-      })
-   await Promise.all(fetches)
+      }))
+   }
 })
 
 function sparklineOption(item) {
@@ -65,7 +69,7 @@ function formatValue(value) {
 function getColumnsAsCsv() {
    const header = `Rank,Label,Value${unit.value ? ' (' + unit.value + ')' : ''}`
    const body = items.value.map((item, i) =>
-      [i + 1, item.label || '', item.value ?? ''].join(',')
+      [i + 1, csvSafe(item.label), csvSafe(item.value)].join(',')
    ).join('\n')
    return header + '\n' + body
 }

@@ -9,8 +9,11 @@ const props = defineProps({
 const vizStore = useVisualizationStore()
 const canvas = ref(null)
 
-const rows = computed(() => props.data.rowLabels || [])
-const cols = computed(() => props.data.columnLabels || [])
+const MAX_PREVIEW_ROWS = 200
+const MAX_PREVIEW_COLS = 200
+
+const rows = computed(() => (props.data.rowLabels || []).slice(0, MAX_PREVIEW_ROWS))
+const cols = computed(() => (props.data.columnLabels || []).slice(0, MAX_PREVIEW_COLS))
 
 function parseColor(color) {
    const ctx = document.createElement('canvas').getContext('2d')
@@ -35,8 +38,8 @@ function interpolateColor(t, c0, c1) {
 onMounted(() => {
    if (!canvas.value) return
    const values = props.data.values || []
-   const numRows = rows.value.length
-   const numCols = cols.value.length
+   const numRows = Math.min(rows.value.length, MAX_PREVIEW_ROWS)
+   const numCols = Math.min(cols.value.length, MAX_PREVIEW_COLS)
    if (numRows === 0 || numCols === 0) return
 
    const colorRange = props.data.colorRange || ['#ffffff', '#3b82f6']

@@ -5,6 +5,8 @@ import 'leaflet/dist/leaflet.css'
 import { useServerInfoStore } from '@/stores/serverInfoStore'
 import { createTileLayer } from '@/utils/tileUrl'
 import { getStatusColor } from '@/utils/statusColors'
+import { escapeHtml } from '@/utils/escapeHtml'
+import { csvSafe } from '@/utils/csvSafe'
 
 const props = defineProps({
    data: { type: Object, required: true },
@@ -90,22 +92,16 @@ function buildPopup(m) {
    return parts.join('<br>')
 }
 
-function escapeHtml(str) {
-   const el = document.createElement('span')
-   el.textContent = str
-   return el.innerHTML
-}
-
 function getColumnsAsCsv() {
    const header = 'Label,Object Name,Object ID,Latitude,Longitude,Status'
    const body = (props.data.markers || []).map((m) =>
       [
-         m.label || '',
-         m.objectName || '',
-         m.objectId || '',
+         csvSafe(m.label),
+         csvSafe(m.objectName),
+         csvSafe(m.objectId),
          m.lat,
          m.lng,
-         m.status || '',
+         csvSafe(m.status),
       ].join(',')
    ).join('\n')
    return header + '\n' + body

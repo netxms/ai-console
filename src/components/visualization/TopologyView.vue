@@ -13,7 +13,11 @@ const props = defineProps({
 const container = ref(null)
 const loading = ref(true)
 const error = ref(null)
+const warning = ref(null)
 let network = null
+
+const MAX_NODES = 500
+const MAX_EDGES = 1000
 
 const statusNames = {
    0: 'normal',
@@ -63,7 +67,18 @@ async function loadTopology() {
 
    if (!container.value) return
 
-   const nodes = new DataSet((result.objects || []).map((obj) => ({
+   const rawObjects = result.objects || []
+   const rawLinks = result.links || []
+   const truncated = rawObjects.length > MAX_NODES || rawLinks.length > MAX_EDGES
+   const limitedObjects = rawObjects.slice(0, MAX_NODES)
+   const nodeIds = new Set(limitedObjects.map((o) => o.id))
+   const limitedLinks = rawLinks.filter((l) => nodeIds.has(l.object1) && nodeIds.has(l.object2)).slice(0, MAX_EDGES)
+
+   if (truncated) {
+      warning.value = `Topology truncated for performance (showing ${limitedObjects.length} of ${rawObjects.length} nodes, ${limitedLinks.length} of ${rawLinks.length} links)`
+   }
+
+   const nodes = new DataSet(limitedObjects.map((obj) => ({
       id: obj.id,
       label: obj.name || `#${obj.id}`,
       color: {
@@ -80,13 +95,13 @@ async function loadTopology() {
 
    // Count parallel edges between same node pairs to fan them out
    const pairCounts = {}
-   for (const link of (result.links || [])) {
+   for (const link of limitedLinks) {
       const key = [Math.min(link.object1, link.object2), Math.max(link.object1, link.object2)].join('-')
       pairCounts[key] = (pairCounts[key] || 0) + 1
    }
    const pairIndexes = {}
 
-   const edges = new DataSet((result.links || []).map((link, i) => {
+   const edges = new DataSet(limitedLinks.map((link, i) => {
       const style = getEdgeStyle(link.type)
       const key = [Math.min(link.object1, link.object2), Math.max(link.object1, link.object2)].join('-')
       const idx = pairIndexes[key] = (pairIndexes[key] || 0) + 1
@@ -170,6 +185,7 @@ function exportPng() {
 }
 
 async function refresh() {
+   warning.value = null
    if (network) {
       network.destroy()
       network = null
@@ -201,6 +217,10 @@ onBeforeUnmount(() => {
       </div>
       <template v-else>
          <div class="topology-toolbar">
+            <span v-if="warning" class="topology-warning">
+               <i class="pi pi-exclamation-triangle" />
+               {{ warning }}
+            </span>
             <Button
                icon="pi pi-refresh"
                severity="secondary"
@@ -237,6 +257,14 @@ onBeforeUnmount(() => {
    gap: 0.25rem;
    padding: 0.25rem 0.5rem;
    flex-shrink: 0;
+}
+
+.topology-warning {
+   font-size: 0.75rem;
+   color: var(--p-orange-500);
+   display: flex;
+   align-items: center;
+   gap: 0.375rem;
 }
 
 .topology-canvas {

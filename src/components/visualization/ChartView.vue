@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import VChart from 'vue-echarts'
+import { escapeHtml } from '@/utils/escapeHtml'
 
 const props = defineProps({
   data: { type: Object, required: true },
@@ -13,7 +14,7 @@ const option = computed(() => {
   try {
     const d = props.data
     const series = (d.series || []).map((s) => ({
-      name: s.name,
+      name: escapeHtml(s.name),
       type: d.chartType === 'area' ? 'line' : 'line',
       areaStyle: d.chartType === 'area' ? { opacity: 0.3 } : undefined,
       data: s.data,
