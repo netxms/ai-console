@@ -46,6 +46,9 @@ Create a `.env.local` file to override defaults:
 # NetXMS server URL for dev proxy
 VITE_API_TARGET=https://your-netxms-server.example.com
 
+# Application base path (default: /)
+VITE_BASE_URL=/
+
 # API base path (default: /api)
 VITE_API_BASE_URL=/api
 ```
@@ -53,7 +56,12 @@ VITE_API_BASE_URL=/api
 ### Production Build
 
 ```bash
-npx vite build
+yarn build
+```
+
+To build for deployment under path other than /:
+```bash
+VITE_BASE_URL=/path yarn build
 ```
 
 Output goes to `dist/`. Serve with any static file server. In production, configure your reverse proxy to forward `/api` requests to the NetXMS WebAPI.
@@ -70,7 +78,7 @@ Output goes to `dist/`. Serve with any static file server. In production, config
 ## Architecture
 
 ```
-┌──────────────────────────────────────────────────────┐
+┌───────────────────────────────────────────────────────┐
 │                 AI Console (Vue 3 SPA)                │
 │                                                       │
 │  ┌─────────────────────┐  ┌────────────────────────┐  │
@@ -81,30 +89,16 @@ Output goes to `dist/`. Serve with any static file server. In production, config
 │  │                     │  │                        │  │
 │  │  [Chat Input]       │  │  [Toolbar]             │  │
 │  └─────────────────────┘  └────────────────────────┘  │
-└───────────────────┬──────────────────────────────────┘
-                    │ REST/JSON (polling)
-              ┌─────┴──────┐
-              │  NetXMS    │
-              │  Server    │
-              │  WebAPI    │
-              └────────────┘
+└─────────────────────────┬─────────────────────────────┘
+                          │ REST/JSON (polling)
+                    ┌─────┴──────┐
+                    │  NetXMS    │
+                    │  Server    │
+                    │  WebAPI    │
+                    └────────────┘
 ```
 
 The chat panel takes full width when no visualizations are open. When a visualization is created, the view splits into a 45/55 layout with the visualization panel appearing on the right.
-
-## API Endpoints Used
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/v1/login` | Authenticate |
-| `POST` | `/v1/logout` | End session |
-| `GET` | `/v1/status` | Validate session |
-| `POST` | `/v1/ai/chat` | Create AI chat session |
-| `POST` | `/v1/ai/chat/:id/message` | Send message |
-| `GET` | `/v1/ai/chat/:id/status` | Poll for response |
-| `POST` | `/v1/ai/chat/:id/answer` | Answer pending question |
-| `POST` | `/v1/ai/chat/:id/clear` | Clear chat history |
-| `DELETE` | `/v1/ai/chat/:id` | Delete chat session |
 
 ## License
 
