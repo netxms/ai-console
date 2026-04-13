@@ -13,10 +13,16 @@ _Chat interface with inline chart previews on the left, full interactive visuali
 ## Features
 
 - **Conversational interface** — ask questions about your infrastructure in plain English
-- **Rich visualizations** — line/area charts, bar/pie charts, gauges, and tables rendered inline and in a tabbed side panel
+- **Rich visualizations** — line/area charts, bar/pie charts, gauges, tables, heatmaps, sparkline grids, network topology maps, geographic maps, and route traces rendered inline and in a tabbed side panel
+- **DCI charts** — server-side rendered Data Collection Item charts for historical metric data
+- **Network topology** — interactive node-link diagrams for visualizing infrastructure relationships
+- **Geographic maps** — Leaflet-based maps for plotting objects by location
+- **Heatmaps** — time-based heatmap grids for spotting patterns across nodes and periods
+- **Sparkline grids** — compact multi-metric overview with miniature trend lines
 - **Interactive charts** — zoom, tooltips, data zoom slider, threshold lines
 - **Tables with filtering** — sortable, paginated, with global text filter and severity badges
 - **Visualization toolbar** — fullscreen, PNG export, CSV copy
+- **Dark mode** — toggleable dark/light theme with OS preference detection
 - **Pending questions** — the AI can ask for confirmation or offer multiple-choice options mid-conversation
 - **XSS protection** — sanitized Markdown rendering
 
@@ -70,9 +76,12 @@ Output goes to `dist/`. Serve with any static file server. In production, config
 
 - [Vue 3](https://vuejs.org/) — Composition API with `<script setup>`
 - [PrimeVue 4](https://primevue.org/) — UI component library (Aura theme)
-- [ECharts](https://echarts.apache.org/) via [vue-echarts](https://github.com/ecomfe/vue-echarts) — charts and gauges
+- [ECharts](https://echarts.apache.org/) via [vue-echarts](https://github.com/ecomfe/vue-echarts) — charts, gauges, and heatmaps
+- [Leaflet](https://leafletjs.com/) — geographic maps
+- [vis-network](https://visjs.github.io/vis-network/) — network topology diagrams
 - [Pinia](https://pinia.vuejs.org/) — state management
 - [marked](https://marked.js.org/) — Markdown rendering
+- [DOMPurify](https://github.com/cure53/DOMPurify) — HTML sanitization
 - [Vite](https://vite.dev/) — build tool
 
 ## Architecture
