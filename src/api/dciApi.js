@@ -1,5 +1,55 @@
 import { get } from './client'
 
+// Per-node cache: nodeId -> Promise<Map<metricName, numericDciId>>
+const dciIdCache = new Map()
+
+function loadDciIndex(nodeId) {
+   let pending = dciIdCache.get(nodeId)
+   if (pending) return pending
+
+   pending = (async () => {
+      const response = await get(`/v1/objects/${nodeId}/data-collection`)
+      // Tolerate a few possible response shapes: array, { dciList }, { items }, { dcis }
+      const list = Array.isArray(response)
+         ? response
+         : response?.dciList || response?.items || response?.dcis || []
+      const index = new Map()
+      for (const dci of list) {
+         if (dci && dci.name && dci.id != null) {
+            index.set(dci.name, String(dci.id))
+         }
+      }
+      return index
+   })().catch((err) => {
+      // Don't poison the cache on transient failures
+      dciIdCache.delete(nodeId)
+      throw err
+   })
+
+   dciIdCache.set(nodeId, pending)
+   return pending
+}
+
+/**
+ * Resolve a metric name to a numeric DCI ID. If the input is already numeric,
+ * it's returned as-is.
+ */
+async function resolveDciId(nodeId, dciIdOrName) {
+   if (dciIdOrName == null) {
+      throw new Error('Missing dciId')
+   }
+   const str = String(dciIdOrName)
+   if (/^\d+$/.test(str)) {
+      return str
+   }
+   const index = await loadDciIndex(nodeId)
+   const resolved = index.get(str)
+   if (!resolved) {
+      throw new Error(`DCI "${str}" not found on node ${nodeId}`)
+   }
+   return resolved
+}
+
 /**
  * Resolve a timeRange shorthand (e.g. "last-24h") to { timeFrom, timeTo } in seconds.
  * If timeFrom/timeTo are already provided, pass them through.
@@ -43,8 +93,9 @@ export async function fetchDciChartData(seriesConfig, { timeFrom, timeTo, timeRa
       if (resolved.timeTo) params.set('timeTo', resolved.timeTo)
       if (maxDataPoints) params.set('maxDataPoints', maxDataPoints)
 
+      const numericDciId = await resolveDciId(entry.nodeId, entry.dciId)
       const qs = params.toString()
-      const path = `/v1/objects/${entry.nodeId}/data-collection/${entry.dciId}/history${qs ? '?' + qs : ''}`
+      const path = `/v1/objects/${entry.nodeId}/data-collection/${numericDciId}/history${qs ? '?' + qs : ''}`
       const response = await get(path)
 
       if (response.aggregated) {
