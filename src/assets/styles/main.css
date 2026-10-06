@@ -82,6 +82,19 @@ body {
   border: 1px solid var(--sem-info);
   border-radius: 4px;
   padding: 0.05rem 0.35rem;
-  margin-left: auto;
+  margin-inline-start: auto;
   line-height: 1.4;
+}
+
+/* Letter spacing breaks the joining of Arabic script */
+[dir='rtl'] .aggregated-badge {
+  letter-spacing: 0;
+}
+
+/* Canvas-based visualizations (ECharts, Leaflet, vis-network) keep their
+   left-to-right layout in right-to-left languages */
+x-vue-echarts,
+.leaflet-container,
+.vis-network {
+  direction: ltr;
 }

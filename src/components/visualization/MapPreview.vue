@@ -6,6 +6,7 @@ import { useVisualizationStore } from '@/stores/visualizationStore'
 import { useServerInfoStore } from '@/stores/serverInfoStore'
 import { createTileLayer } from '@/utils/tileUrl'
 import { getStatusColor } from '@/utils/statusColors'
+import { t } from '@/i18n'
 
 const props = defineProps({
    data: { type: Object, required: true },
@@ -38,7 +39,7 @@ async function initMap() {
       await serverInfoStore.fetch()
       const tileUrl = serverInfoStore.tileServerURL()
       if (!tileUrl) {
-         error.value = 'Tile server URL not available'
+         error.value = t('viz.map.tileServerUnavailable')
          return
       }
 
@@ -94,7 +95,7 @@ function openTab() {
    <div class="map-preview" @click="openTab">
       <div class="preview-header">
          <i class="pi pi-map" />
-         <span>{{ data.title || 'Map' }}</span>
+         <span>{{ data.title || t('viz.types.map') }}</span>
          <i class="pi pi-external-link preview-link" />
       </div>
       <div v-if="error" class="viz-error">
@@ -131,7 +132,7 @@ function openTab() {
 }
 
 .map-preview .preview-link {
-   margin-left: auto;
+   margin-inline-start: auto;
    font-size: 0.7rem;
    opacity: 0;
    transition: opacity 0.15s;

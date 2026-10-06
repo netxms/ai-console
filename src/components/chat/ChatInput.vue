@@ -4,6 +4,7 @@ import Button from 'primevue/button'
 import Textarea from 'primevue/textarea'
 import SavedPromptsMenu from './SavedPromptsMenu.vue'
 import SavePromptDialog from './SavePromptDialog.vue'
+import { t } from '@/i18n'
 
 const props = defineProps({
   disabled: { type: Boolean, default: false },
@@ -63,7 +64,7 @@ function handleSavePrompt() {
         severity="secondary"
         text
         size="small"
-        v-tooltip.top="'Saved prompts'"
+        v-tooltip.top="t('savedPrompts.open')"
         @click="savedPromptsMenu.toggle($event)"
       />
       <Button
@@ -72,14 +73,15 @@ function handleSavePrompt() {
         severity="secondary"
         text
         size="small"
-        v-tooltip.top="'Save prompt'"
+        v-tooltip.top="t('savedPrompts.save')"
         @click="handleSavePrompt"
       />
     </div>
     <Textarea
       ref="textarea"
       v-model="text"
-      placeholder="Ask about your infrastructure..."
+      :placeholder="t('chat.inputPlaceholder')"
+      :dir="text ? 'auto' : null"
       :disabled="disabled"
       auto-resize
       :rows="1"

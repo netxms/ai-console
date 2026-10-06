@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import Button from 'primevue/button'
+import { t } from '@/i18n'
 
 const props = defineProps({
   type: { type: String, required: true },
@@ -57,7 +58,7 @@ document.addEventListener('fullscreenchange', () => {
       severity="secondary"
       text
       size="small"
-      v-tooltip.bottom="isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'"
+      v-tooltip.bottom="isFullscreen ? t('viz.toolbar.exitFullscreen') : t('viz.toolbar.fullscreen')"
       @click="toggleFullscreen"
     />
     <Button
@@ -66,7 +67,7 @@ document.addEventListener('fullscreenchange', () => {
       severity="secondary"
       text
       size="small"
-      v-tooltip.bottom="'Export PNG'"
+      v-tooltip.bottom="t('viz.toolbar.exportPng')"
       @click="exportPng"
     />
     <Button
@@ -75,7 +76,7 @@ document.addEventListener('fullscreenchange', () => {
       severity="secondary"
       text
       size="small"
-      v-tooltip.bottom="'Reset View'"
+      v-tooltip.bottom="t('viz.toolbar.resetView')"
       @click="resetView"
     />
     <Button
@@ -84,7 +85,7 @@ document.addEventListener('fullscreenchange', () => {
       severity="secondary"
       text
       size="small"
-      v-tooltip.bottom="'Copy as CSV'"
+      v-tooltip.bottom="t('viz.toolbar.copyCsv')"
       @click="copyCsv"
     />
   </div>

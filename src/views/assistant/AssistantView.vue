@@ -45,7 +45,7 @@ onMounted(() => {
   flex: 0 0 45%;
   max-width: none;
   margin: 0;
-  border-right: 1px solid var(--p-surface-border);
+  border-inline-end: 1px solid var(--p-surface-border);
 }
 
 .viz-pane {
@@ -62,7 +62,7 @@ onMounted(() => {
     flex: 1 1 50%;
     min-height: 0;
     overflow: hidden;
-    border-right: none;
+    border-inline-end: none;
     border-bottom: 1px solid var(--p-surface-border);
   }
 

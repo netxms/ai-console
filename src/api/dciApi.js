@@ -1,4 +1,5 @@
 import { get } from './client'
+import { t } from '@/i18n'
 
 // Per-node cache: nodeId -> Promise<Map<metricName, numericDciId>>
 const dciIdCache = new Map()
@@ -36,7 +37,7 @@ function loadDciIndex(nodeId) {
  */
 async function resolveDciId(nodeId, dciIdOrName) {
    if (dciIdOrName == null) {
-      throw new Error('Missing dciId')
+      throw new Error(t('api.missingDciId'))
    }
    const str = String(dciIdOrName)
    if (/^\d+$/.test(str)) {
@@ -45,7 +46,7 @@ async function resolveDciId(nodeId, dciIdOrName) {
    const index = await loadDciIndex(nodeId)
    const resolved = index.get(str)
    if (!resolved) {
-      throw new Error(`DCI "${str}" not found on node ${nodeId}`)
+      throw new Error(t('api.dciNotFound', { name: str, nodeId }))
    }
    return resolved
 }

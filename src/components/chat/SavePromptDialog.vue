@@ -5,6 +5,7 @@ import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
 import Button from 'primevue/button'
 import { useSavedPromptsStore } from '@/stores/savedPromptsStore'
+import { t } from '@/i18n'
 
 const props = defineProps({
    visible: { type: Boolean, default: false },
@@ -50,28 +51,28 @@ async function save() {
    <Dialog
       :visible="visible"
       @update:visible="emit('update:visible', $event)"
-      header="Save Prompt"
+      :header="t('savedPrompts.dialogTitle')"
       :modal="true"
       :style="{ width: '28rem' }"
    >
       <div class="save-prompt-form">
          <div class="save-prompt-field">
-            <label>Name</label>
-            <InputText v-model="name" placeholder="e.g. Top busy interfaces" class="save-prompt-input" />
+            <label>{{ t('savedPrompts.name') }}</label>
+            <InputText v-model="name" :placeholder="t('savedPrompts.namePlaceholder')" class="save-prompt-input" />
          </div>
          <div class="save-prompt-field">
-            <label>Description (optional)</label>
-            <InputText v-model="description" placeholder="Brief description" class="save-prompt-input" />
+            <label>{{ t('savedPrompts.description') }}</label>
+            <InputText v-model="description" :placeholder="t('savedPrompts.descriptionPlaceholder')" class="save-prompt-input" />
          </div>
          <div class="save-prompt-field">
-            <label>Prompt</label>
-            <Textarea :model-value="promptText" disabled auto-resize :rows="2" class="save-prompt-input" />
+            <label>{{ t('savedPrompts.prompt') }}</label>
+            <Textarea :model-value="promptText" dir="auto" disabled auto-resize :rows="2" class="save-prompt-input" />
          </div>
          <small v-if="error" class="save-prompt-error">{{ error }}</small>
       </div>
       <template #footer>
-         <Button label="Cancel" severity="secondary" text @click="emit('update:visible', false)" />
-         <Button label="Save" :disabled="!name.trim() || saving" :loading="saving" @click="save" />
+         <Button :label="t('common.cancel')" severity="secondary" text @click="emit('update:visible', false)" />
+         <Button :label="t('common.save')" :disabled="!name.trim() || saving" :loading="saving" @click="save" />
       </template>
    </Dialog>
 </template>

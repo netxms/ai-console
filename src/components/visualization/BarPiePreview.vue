@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import VChart from 'vue-echarts'
 import { useVisualizationStore } from '@/stores/visualizationStore'
+import { t } from '@/i18n'
 
 const props = defineProps({
   data: { type: Object, required: true },
@@ -65,7 +66,7 @@ function openTab() {
   <div class="barpie-preview" @click="openTab">
     <div class="preview-header">
       <i :class="data.type === 'pie' ? 'pi pi-chart-pie' : 'pi pi-chart-bar'" />
-      <span>{{ data.title || (data.type === 'pie' ? 'Pie Chart' : 'Bar Chart') }}</span>
+      <span>{{ data.title || t(`viz.types.${data.type}`) }}</span>
       <i class="pi pi-external-link preview-link" />
     </div>
     <div v-if="error" class="viz-error">
@@ -102,7 +103,7 @@ function openTab() {
 }
 
 .preview-link {
-  margin-left: auto;
+  margin-inline-start: auto;
   font-size: 0.7rem;
   opacity: 0;
   transition: opacity 0.15s;

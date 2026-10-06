@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useVisualizationStore } from '@/stores/visualizationStore'
+import { t } from '@/i18n'
 import VizToolbar from './VizToolbar.vue'
 import ChartView from './ChartView.vue'
 import TableView from './TableView.vue'
@@ -42,7 +43,7 @@ const viewComponents = {
         :class="{ active: tab.id === vizStore.activeTabId }"
         @click="vizStore.setActiveTab(tab.id)"
       >
-        <span class="tab-title">{{ tab.title || tab.type }}</span>
+        <span class="tab-title">{{ tab.title || t(`viz.types.${tab.type}`) }}</span>
         <button class="tab-close" @click.stop="vizStore.removeTab(tab.id)">
           <i class="pi pi-times" />
         </button>

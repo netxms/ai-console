@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import Tag from 'primevue/tag'
 import { csvSafe } from '@/utils/csvSafe'
+import { t } from '@/i18n'
 
 const props = defineProps({
    data: { type: Object, required: true },
@@ -26,25 +27,27 @@ function hopDetail(hop) {
       case 'ROUTE': {
          const parts = []
          if (hop.name) parts.push(hop.name)
-         if (hop.nextHop) parts.push(`next hop ${hop.nextHop}`)
-         if (hop.route) parts.push(`via ${hop.route}`)
+         if (hop.nextHop) parts.push(t('viz.route.nextHop', { address: hop.nextHop }))
+         if (hop.route) parts.push(t('viz.route.via', { route: hop.route }))
          return parts.join(' \u2014 ')
       }
       case 'VPN':
-         return hop.vpnConnectorName || `VPN connector ${hop.vpnConnectorId || ''}`
+         return hop.vpnConnectorName || t('viz.route.vpnConnector', { id: hop.vpnConnectorId || '' })
       case 'PROXY':
-         return hop.proxyNodeName || `Proxy node ${hop.proxyNodeId || ''}`
+         return hop.proxyNodeName || t('viz.route.proxyNode', { id: hop.proxyNodeId || '' })
       case 'L2_LINK':
-         return hop.name || 'L2 link'
+         return hop.name || t('viz.route.l2Link')
       case 'DESTINATION':
-         return 'Destination'
+         return t('viz.route.destination')
       default:
          return hop.name || ''
    }
 }
 
 function getColumnsAsCsv() {
-   const header = 'Hop,Node,Node ID,Type,Details'
+   const header = ['hop', 'node', 'nodeId', 'type', 'details']
+      .map((column) => csvSafe(t(`viz.route.csv.${column}`)))
+      .join(',')
    const body = hops.value.map((hop, i) =>
       [i + 1, csvSafe(hop.objectName), csvSafe(hop.objectId), csvSafe(hop.type), csvSafe(hopDetail(hop))].join(',')
    ).join('\n')
@@ -57,12 +60,12 @@ defineExpose({ getColumnsAsCsv })
 <template>
    <div class="route-view">
       <div class="route-view-header">
-         <h3 class="route-view-title">{{ data.title || 'Network Path' }}</h3>
+         <h3 class="route-view-title">{{ data.title || t('viz.types.route') }}</h3>
          <Tag
-            :value="data.isComplete ? 'Complete' : 'Incomplete'"
+            :value="data.isComplete ? t('viz.route.complete') : t('viz.route.incomplete')"
             :severity="data.isComplete ? 'success' : 'warn'"
          />
-         <span class="route-view-count">{{ hops.length }} hop{{ hops.length !== 1 ? 's' : '' }}</span>
+         <span class="route-view-count">{{ t('viz.route.hopCount', { count: hops.length }) }}</span>
       </div>
 
       <div class="route-view-path">
@@ -80,7 +83,7 @@ defineExpose({ getColumnsAsCsv })
             </div>
             <div class="route-hop-content">
                <div class="route-hop-node">
-                  <span class="route-hop-name">{{ hop.objectName || `Node ${hop.objectId}` }}</span>
+                  <span class="route-hop-name">{{ hop.objectName || t('viz.route.nodeFallback', { id: hop.objectId }) }}</span>
                   <span class="route-hop-id">[{{ hop.objectId }}]</span>
                </div>
                <div class="route-hop-detail">
@@ -103,10 +106,10 @@ defineExpose({ getColumnsAsCsv })
             </div>
             <div class="route-hop-content">
                <div class="route-hop-node">
-                  <span class="route-hop-name route-incomplete-text">Path incomplete</span>
+                  <span class="route-hop-name route-incomplete-text">{{ t('viz.route.pathIncomplete') }}</span>
                </div>
                <div class="route-hop-detail">
-                  <span class="route-hop-info route-incomplete-text">Next hop could not be resolved</span>
+                  <span class="route-hop-info route-incomplete-text">{{ t('viz.route.nextHopUnresolved') }}</span>
                </div>
             </div>
          </div>
@@ -141,7 +144,7 @@ defineExpose({ getColumnsAsCsv })
 .route-view-count {
    font-size: 0.8rem;
    color: var(--p-text-muted-color);
-   margin-left: auto;
+   margin-inline-start: auto;
 }
 
 .route-view-path {
@@ -185,7 +188,7 @@ defineExpose({ getColumnsAsCsv })
 
 .route-hop-line-dashed {
    background: none !important;
-   border-left: 2px dashed;
+   border-inline-start: 2px dashed;
    width: 0;
 }
 

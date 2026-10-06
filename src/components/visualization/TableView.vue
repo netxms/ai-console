@@ -5,12 +5,13 @@ import Column from 'primevue/column'
 import Tag from 'primevue/tag'
 import InputText from 'primevue/inputtext'
 import { csvSafe } from '@/utils/csvSafe'
+import { t, formatDateTime } from '@/i18n'
 
 const props = defineProps({
   data: { type: Object, required: true },
 })
 
-const severityLabels = ['Normal', 'Warning', 'Minor', 'Major', 'Critical']
+const severityNames = ['normal', 'warning', 'minor', 'major', 'critical']
 const severityColors = {
   0: 'success',
   1: 'warn',
@@ -28,7 +29,7 @@ const filters = ref({
 function formatDatetime(value) {
   if (!value) return ''
   const d = new Date(typeof value === 'number' ? value * 1000 : value)
-  return d.toLocaleString()
+  return formatDateTime(d)
 }
 
 function getColumnsAsCsv() {
@@ -50,7 +51,7 @@ defineExpose({ getColumnsAsCsv })
         <i class="pi pi-search" />
         <InputText
           v-model="filters['global'].value"
-          placeholder="Filter..."
+          :placeholder="t('viz.table.filter')"
           size="small"
           class="table-filter-input"
         />
@@ -79,7 +80,7 @@ defineExpose({ getColumnsAsCsv })
         <template #body="{ data: row }">
           <Tag
             v-if="col.type === 'severity'"
-            :value="severityLabels[row[col.field]] || String(row[col.field])"
+            :value="severityNames[row[col.field]] ? t(`severity.${severityNames[row[col.field]]}`) : String(row[col.field])"
             :severity="severityColors[row[col.field]] || 'secondary'"
           />
           <span v-else-if="col.type === 'datetime'">

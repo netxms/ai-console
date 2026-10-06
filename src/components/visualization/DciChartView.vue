@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import VChart from 'vue-echarts'
 import { fetchDciChartData } from '@/api/dciApi'
 import { escapeHtml } from '@/utils/escapeHtml'
+import { t } from '@/i18n'
 
 const props = defineProps({
    data: { type: Object, required: true },
@@ -87,14 +88,14 @@ defineExpose({ chartRef })
    <div class="chart-view">
       <div v-if="loading" class="dci-chart-loading">
          <i class="pi pi-spinner pi-spin" />
-         <span>Loading DCI data...</span>
+         <span>{{ t('viz.loadingDciData') }}</span>
       </div>
       <div v-else-if="error" class="viz-error">
          <i class="pi pi-exclamation-triangle" />
-         <span>Failed to load data: {{ error }}</span>
+         <span>{{ t('viz.loadDataFailed', { error }) }}</span>
       </div>
       <template v-else-if="option">
-         <span v-if="aggregated" class="aggregated-badge">aggregated</span>
+         <span v-if="aggregated" class="aggregated-badge">{{ t('common.aggregated') }}</span>
          <VChart ref="chartRef" :option="option" class="chart-full" autoresize />
       </template>
    </div>

@@ -1,10 +1,15 @@
 <script setup>
 import { computed } from 'vue'
+import { useLocaleStore } from '@/stores/localeStore'
+import { t } from '@/i18n'
+
+const localeStore = useLocaleStore()
 
 const props = defineProps({
   functionName: { type: String, default: null },
 })
 
+// English only: other languages cannot derive a phrase from the function name
 const progressiveVerbs = [
   ['get ', 'Getting'],
   ['read ', 'Reading'],
@@ -25,6 +30,7 @@ const progressiveVerbs = [
 const functionLabel = computed(() => {
   if (!props.functionName) return null
   const readable = props.functionName.replace(/[-_]/g, ' ')
+  if (localeStore.locale !== 'en') return t('chat.runningFunction', { name: readable })
   const lower = readable.toLowerCase()
   for (const [prefix, progressive] of progressiveVerbs) {
     if (lower.startsWith(prefix)) {
@@ -83,7 +89,8 @@ const functionLabel = computed(() => {
   padding: 0.625rem 0.875rem;
   background: var(--p-surface-card);
   border: 1px solid var(--p-surface-border);
-  border-radius: 2px 12px 12px 12px;
+  border-radius: 12px;
+  border-start-start-radius: 2px;
 }
 
 .dot {

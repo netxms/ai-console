@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import VChart from 'vue-echarts'
 import { useVisualizationStore } from '@/stores/visualizationStore'
+import { t } from '@/i18n'
 
 const props = defineProps({
   data: { type: Object, required: true },
@@ -43,8 +44,8 @@ function openTab() {
   <div class="chart-preview" @click="openTab">
     <div class="preview-header">
       <i class="pi pi-chart-line" />
-      <span>{{ data.title || 'Chart' }}</span>
-      <span v-if="data.aggregated" class="aggregated-badge">aggregated</span>
+      <span>{{ data.title || t('viz.types.chart') }}</span>
+      <span v-if="data.aggregated" class="aggregated-badge">{{ t('common.aggregated') }}</span>
       <i class="pi pi-external-link preview-link" />
     </div>
     <div v-if="error" class="viz-error">
@@ -81,7 +82,7 @@ function openTab() {
 }
 
 .preview-link {
-  margin-left: auto;
+  margin-inline-start: auto;
   font-size: 0.7rem;
   opacity: 0;
   transition: opacity 0.15s;

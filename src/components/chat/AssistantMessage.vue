@@ -11,6 +11,7 @@ import MapPreview from '@/components/visualization/MapPreview.vue'
 import HeatmapPreview from '@/components/visualization/HeatmapPreview.vue'
 import SparklineGridPreview from '@/components/visualization/SparklineGridPreview.vue'
 import TopologyPreview from '@/components/visualization/TopologyPreview.vue'
+import { t, formatTime } from '@/i18n'
 
 const props = defineProps({
   blocks: { type: Array, required: true },
@@ -34,8 +35,7 @@ const vizComponents = {
 
 const timeLabel = computed(() => {
   if (!props.timestamp) return ''
-  const d = new Date(props.timestamp)
-  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  return formatTime(props.timestamp)
 })
 </script>
 
@@ -52,7 +52,7 @@ const timeLabel = computed(() => {
           :is="vizComponents[block.type]"
           :data="block"
         />
-        <TextBlock v-else :content="`Unsupported visualization: ${block.type}`" />
+        <TextBlock v-else :content="t('chat.unsupportedVisualization', { type: block.type })" />
       </template>
       <span v-if="timeLabel" class="msg-time">{{ timeLabel }}</span>
     </div>

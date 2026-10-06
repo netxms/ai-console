@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import VChart from 'vue-echarts'
 import { escapeHtml } from '@/utils/escapeHtml'
+import { t } from '@/i18n'
 
 const props = defineProps({
    data: { type: Object, required: true },
@@ -16,7 +17,7 @@ const option = computed(() => {
       const cols = props.data.columnLabels || []
       const values = props.data.values || []
       const colorRange = props.data.colorRange || ['#ffffff', '#3b82f6']
-      const valueLabel = props.data.valueLabel || 'value'
+      const valueLabel = props.data.valueLabel || t('viz.heatmap.value')
 
       let min = Infinity, max = -Infinity
       const seriesData = []
@@ -84,7 +85,7 @@ defineExpose({ chartRef })
    <div class="heatmap-view">
       <div v-if="error" class="viz-error">
          <i class="pi pi-exclamation-triangle" />
-         <span>Failed to render heatmap: {{ error }}</span>
+         <span>{{ t('viz.heatmapRenderFailed', { error }) }}</span>
       </div>
       <VChart v-else-if="option" ref="chartRef" :option="option" class="chart-full" autoresize />
    </div>

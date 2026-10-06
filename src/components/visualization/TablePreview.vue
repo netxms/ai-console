@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import { useVisualizationStore } from '@/stores/visualizationStore'
+import { t } from '@/i18n'
 
 const props = defineProps({
   data: { type: Object, required: true },
@@ -21,9 +22,9 @@ function openTab() {
   <div class="table-preview" @click="openTab">
     <div class="preview-header">
       <i class="pi pi-table" />
-      <span>{{ data.title || 'Table' }}</span>
+      <span>{{ data.title || t('viz.types.table') }}</span>
       <span v-if="data.rows?.length > 4" class="row-count">
-        {{ data.rows.length }} rows
+        {{ t('viz.table.rowCount', { count: data.rows.length }) }}
       </span>
       <i class="pi pi-external-link preview-link" />
     </div>
@@ -69,7 +70,7 @@ function openTab() {
 }
 
 .preview-link {
-  margin-left: auto;
+  margin-inline-start: auto;
   font-size: 0.7rem;
   opacity: 0;
   transition: opacity 0.15s;

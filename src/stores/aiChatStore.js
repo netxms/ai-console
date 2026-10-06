@@ -2,6 +2,7 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import * as aiChatApi from '@/api/aiChatApi'
 import { parseResponse } from '@/utils/parseResponse'
+import { t } from '@/i18n'
 
 export const useAiChatStore = defineStore('aiChat', () => {
   const chatId = ref(null)
@@ -49,7 +50,7 @@ export const useAiChatStore = defineStore('aiChat', () => {
       error.value = err.message
       messages.value.push({
         role: 'assistant',
-        blocks: [{ type: 'text', content: `Error: ${err.message}` }],
+        blocks: [{ type: 'text', content: t('chat.error', { message: err.message }) }],
         isError: true,
         timestamp: Date.now(),
       })
@@ -71,7 +72,7 @@ export const useAiChatStore = defineStore('aiChat', () => {
             error.value = data.errorMessage
             messages.value.push({
               role: 'assistant',
-              blocks: [{ type: 'text', content: `Error: ${data.errorMessage}` }],
+              blocks: [{ type: 'text', content: t('chat.error', { message: data.errorMessage }) }],
               isError: true,
               timestamp: Date.now(),
             })
@@ -89,11 +90,11 @@ export const useAiChatStore = defineStore('aiChat', () => {
           processing.value = false
           currentFunction.value = null
           pendingQuestion.value = null
-          const msg = data.errorMessage || data.message || 'Unknown error occurred'
+          const msg = data.errorMessage || data.message || t('chat.unknownError')
           error.value = msg
           messages.value.push({
             role: 'assistant',
-            blocks: [{ type: 'text', content: `Error: ${msg}` }],
+            blocks: [{ type: 'text', content: t('chat.error', { message: msg }) }],
             isError: true,
             timestamp: Date.now(),
           })
@@ -118,7 +119,7 @@ export const useAiChatStore = defineStore('aiChat', () => {
         error.value = err.message
         messages.value.push({
           role: 'assistant',
-          blocks: [{ type: 'text', content: `Error: ${err.message}` }],
+          blocks: [{ type: 'text', content: t('chat.error', { message: err.message }) }],
           isError: true,
           timestamp: Date.now(),
         })

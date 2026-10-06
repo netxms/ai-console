@@ -77,12 +77,17 @@ A compact 48px header provides:
 
 - Brand logo and "AI Console" title
 - **New Chat** button — starts a fresh session (with confirmation if a conversation is in progress)
+- **Language switch** — selects the interface language
 - **Theme toggle** — switches between light and dark modes
 - Current username and **Logout** button
 
 ### Theming
 
 The console supports **light and dark modes**, toggled via the header and persisted across sessions. The theme follows system preference on first visit.
+
+### Localization
+
+The interface is available in **English, German, and Arabic**. The language follows the browser preference on first visit and can be changed via the header; the choice is persisted across sessions. Arabic uses a mirrored right-to-left layout, while charts, maps, and topology graphs keep their left-to-right orientation. Message text is aligned by its own content, so responses in a language other than the interface language still read correctly.
 
 The visual identity is driven by a brand configuration system. The default NetXMS brand uses a warm orange palette (#FD7D05), while alternate brands (e.g., FIS-PM) can define their own palette, logos, and color tokens. The brand is selected at build time via the `VITE_BRAND` environment variable.
 

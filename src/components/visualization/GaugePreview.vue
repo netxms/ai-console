@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useVisualizationStore } from '@/stores/visualizationStore'
+import { t } from '@/i18n'
 
 const props = defineProps({
   data: { type: Object, required: true },
@@ -32,7 +33,7 @@ function openTab() {
   <div class="gauge-preview" @click="openTab">
     <div class="preview-header">
       <i class="pi pi-gauge" />
-      <span>{{ data.title || 'Gauge' }}</span>
+      <span>{{ data.title || t('viz.types.gauge') }}</span>
       <i class="pi pi-external-link preview-link" />
     </div>
     <div class="gauge-value-row">
@@ -76,7 +77,7 @@ function openTab() {
 }
 
 .preview-link {
-  margin-left: auto;
+  margin-inline-start: auto;
   font-size: 0.7rem;
   opacity: 0;
   transition: opacity 0.15s;
@@ -92,6 +93,8 @@ function openTab() {
   justify-content: center;
   padding: 0.75rem 0.75rem 0.375rem;
   gap: 0.25rem;
+  /* Value is always followed by its unit, also in right-to-left languages */
+  direction: ltr;
 }
 
 .gauge-value {

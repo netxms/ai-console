@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import VChart from 'vue-echarts'
 import { escapeHtml } from '@/utils/escapeHtml'
+import { t } from '@/i18n'
 
 const props = defineProps({
   data: { type: Object, required: true },
@@ -68,7 +69,7 @@ defineExpose({ chartRef })
   <div class="barpie-view">
     <div v-if="error" class="viz-error">
       <i class="pi pi-exclamation-triangle" />
-      <span>Failed to render chart: {{ error }}</span>
+      <span>{{ t('viz.chartRenderFailed', { error }) }}</span>
     </div>
     <VChart v-else-if="option" ref="chartRef" :option="option" class="barpie-full" autoresize />
   </div>

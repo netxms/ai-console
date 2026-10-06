@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useVisualizationStore } from '@/stores/visualizationStore'
+import { t } from '@/i18n'
 
 const props = defineProps({
    data: { type: Object, required: true },
@@ -33,14 +34,14 @@ function openTab() {
    <div class="route-preview" @click="openTab">
       <div class="preview-header">
          <i class="pi pi-directions" />
-         <span>{{ data.title || 'Network Path' }}</span>
-         <span v-if="!data.isComplete" class="route-incomplete-badge">Incomplete</span>
+         <span>{{ data.title || t('viz.types.route') }}</span>
+         <span v-if="!data.isComplete" class="route-incomplete-badge">{{ t('viz.route.incomplete') }}</span>
          <i class="pi pi-external-link preview-link" />
       </div>
       <div class="route-preview-chain">
          <div v-for="(hop, i) in previewHops" :key="i" class="route-preview-hop">
             <div class="route-preview-dot" :style="{ background: hopColor(hop.type) }" />
-            <span class="route-preview-name">{{ hop.objectName || `Node ${hop.objectId}` }}</span>
+            <span class="route-preview-name">{{ hop.objectName || t('viz.route.nodeFallback', { id: hop.objectId }) }}</span>
             <div
                v-if="i < previewHops.length - 1 || remainingCount > 0 || !data.isComplete"
                class="route-preview-line"
@@ -51,11 +52,11 @@ function openTab() {
             />
          </div>
          <div v-if="remainingCount > 0" class="route-preview-more">
-            +{{ remainingCount }} more hop{{ remainingCount > 1 ? 's' : '' }}
+            {{ t('viz.route.moreHops', { count: remainingCount }) }}
          </div>
          <div v-if="!data.isComplete" class="route-preview-hop">
             <div class="route-preview-dot route-preview-dot-broken" />
-            <span class="route-preview-name route-incomplete-label">Unresolved</span>
+            <span class="route-preview-name route-incomplete-label">{{ t('viz.route.unresolved') }}</span>
          </div>
       </div>
    </div>
@@ -87,7 +88,7 @@ function openTab() {
 }
 
 .route-preview .preview-link {
-   margin-left: auto;
+   margin-inline-start: auto;
    font-size: 0.7rem;
    opacity: 0;
    transition: opacity 0.15s;
@@ -116,7 +117,7 @@ function openTab() {
    align-items: center;
    gap: 0.5rem;
    position: relative;
-   padding-left: 0.25rem;
+   padding-inline-start: 0.25rem;
 }
 
 .route-preview-dot {
@@ -149,7 +150,7 @@ function openTab() {
 
 .route-preview-line {
    position: absolute;
-   left: calc(0.25rem + 3px);
+   inset-inline-start: calc(0.25rem + 3px);
    top: 12px;
    width: 2px;
    height: 14px;
@@ -157,14 +158,14 @@ function openTab() {
 
 .route-preview-line-dashed {
    background: none !important;
-   border-left: 2px dashed;
+   border-inline-start: 2px dashed;
    width: 0;
 }
 
 .route-preview-more {
    font-size: 0.75rem;
    color: var(--p-text-muted-color);
-   padding-left: calc(0.25rem + 12px);
+   padding-inline-start: calc(0.25rem + 12px);
    padding-top: 2px;
    padding-bottom: 2px;
 }

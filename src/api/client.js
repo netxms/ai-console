@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api'
 
 class ApiError extends Error {
@@ -33,19 +35,19 @@ async function request(method, path, { body, headers = {} } = {}) {
   try {
     response = await fetch(`${BASE_URL}${path}`, opts)
   } catch (err) {
-    throw new ApiError('Network error — check your connection', 0)
+    throw new ApiError(t('api.networkError'), 0)
   }
 
   if (response.status === 401 && path !== '/v1/logout') {
     authStore.logout()
     const { default: router } = await import('@/router')
     router.push('/login')
-    throw new ApiError('Session expired', 401)
+    throw new ApiError(t('api.sessionExpired'), 401)
   }
 
   if (!response.ok) {
     const data = await response.json().catch(() => null)
-    throw new ApiError(data?.message || `Request failed: ${response.status}`, response.status, data)
+    throw new ApiError(data?.message || t('api.requestFailed', { status: response.status }), response.status, data)
   }
 
   if (response.status === 204) return null

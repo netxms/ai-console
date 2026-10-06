@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import VChart from 'vue-echarts'
 import { useVisualizationStore } from '@/stores/visualizationStore'
 import { fetchDciChartData } from '@/api/dciApi'
+import { t } from '@/i18n'
 
 const props = defineProps({
    data: { type: Object, required: true },
@@ -70,13 +71,13 @@ function openTab() {
    <div class="chart-preview" @click="openTab">
       <div class="preview-header">
          <i class="pi pi-chart-line" />
-         <span>{{ data.title || 'DCI Chart' }}</span>
-         <span v-if="aggregated" class="aggregated-badge">aggregated</span>
+         <span>{{ data.title || t('viz.types.dci-chart') }}</span>
+         <span v-if="aggregated" class="aggregated-badge">{{ t('common.aggregated') }}</span>
          <i class="pi pi-external-link preview-link" />
       </div>
       <div v-if="loading" class="preview-loading">
          <i class="pi pi-spinner pi-spin" />
-         <span>Loading data...</span>
+         <span>{{ t('viz.loadingData') }}</span>
       </div>
       <div v-else-if="error" class="viz-error">
          <i class="pi pi-exclamation-triangle" />

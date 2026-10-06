@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import VChart from 'vue-echarts'
 import { fetchDciChartData } from '@/api/dciApi'
 import { csvSafe } from '@/utils/csvSafe'
+import { t } from '@/i18n'
 
 const props = defineProps({
    data: { type: Object, required: true },
@@ -67,7 +68,8 @@ function formatValue(value) {
 }
 
 function getColumnsAsCsv() {
-   const header = `Rank,Label,Value${unit.value ? ' (' + unit.value + ')' : ''}`
+   const valueHeader = t('viz.sparkline.csv.value') + (unit.value ? ' (' + unit.value + ')' : '')
+   const header = [t('viz.sparkline.csv.rank'), t('viz.sparkline.csv.label'), valueHeader].map(csvSafe).join(',')
    const body = items.value.map((item, i) =>
       [i + 1, csvSafe(item.label), csvSafe(item.value)].join(',')
    ).join('\n')
@@ -94,8 +96,10 @@ defineExpose({ getColumnsAsCsv })
             </div>
          </div>
          <span class="sparkline-value">
-            {{ formatValue(item.value) }}
-            <span v-if="unit" class="sparkline-unit">{{ unit }}</span>
+            <bdi>
+               {{ formatValue(item.value) }}
+               <span v-if="unit" class="sparkline-unit">{{ unit }}</span>
+            </bdi>
          </span>
          <div class="sparkline-bar-track">
             <div
@@ -126,7 +130,7 @@ defineExpose({ getColumnsAsCsv })
 .sparkline-rank {
    flex-shrink: 0;
    width: 1.5rem;
-   text-align: right;
+   text-align: end;
    font-weight: 700;
    font-size: 0.85rem;
    color: var(--p-text-muted-color);
@@ -163,7 +167,7 @@ defineExpose({ getColumnsAsCsv })
 .sparkline-value {
    flex-shrink: 0;
    min-width: 4.5rem;
-   text-align: right;
+   text-align: end;
    font-weight: 600;
    font-size: 0.9rem;
    font-variant-numeric: tabular-nums;

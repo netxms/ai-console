@@ -4,6 +4,7 @@ import MessageList from './MessageList.vue'
 import ChatInput from './ChatInput.vue'
 import PendingQuestion from './PendingQuestion.vue'
 import { useAiChatStore } from '@/stores/aiChatStore'
+import { t } from '@/i18n'
 
 const chatStore = useAiChatStore()
 const chatInput = ref(null)
@@ -24,7 +25,7 @@ function handleSend(text) {
   <div class="chat-panel">
     <div v-if="contextObject" class="context-bar">
       <i class="pi pi-link" />
-      <span class="context-label">{{ contextObject.object_name || `Object #${contextObject.object_id}` }}</span>
+      <span class="context-label">{{ contextObject.object_name || t('chat.objectFallback', { id: contextObject.object_id }) }}</span>
       <button class="context-clear" @click="chatStore.clearContext()">
         <i class="pi pi-times" />
       </button>
@@ -87,7 +88,7 @@ function handleSend(text) {
 }
 
 .context-clear {
-  margin-left: auto;
+  margin-inline-start: auto;
   background: none;
   border: none;
   cursor: pointer;

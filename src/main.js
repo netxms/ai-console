@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import { createApp, watchEffect } from 'vue'
 import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice'
@@ -19,6 +19,7 @@ import {
 import App from './App.vue'
 import router from './router'
 import { brand } from '@/brands'
+import { useLocaleStore } from '@/stores/localeStore'
 
 import 'primeicons/primeicons.css'
 import '@/assets/styles/main.css'
@@ -53,6 +54,12 @@ app.use(PrimeVue, {
 app.use(ToastService)
 
 app.directive('tooltip', Tooltip)
+
+// Keep PrimeVue's built-in labels in sync with the UI language
+const localeStore = useLocaleStore()
+watchEffect(() => {
+  Object.assign(app.config.globalProperties.$primevue.config.locale.aria, localeStore.current.messages.primevue.aria)
+})
 
 // Apply brand colors as CSS custom properties
 function applyBrandColors(theme, root) {

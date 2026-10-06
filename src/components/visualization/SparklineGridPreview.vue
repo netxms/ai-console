@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useVisualizationStore } from '@/stores/visualizationStore'
+import { t } from '@/i18n'
 
 const props = defineProps({
    data: { type: Object, required: true },
@@ -29,17 +30,17 @@ function openTab() {
    <div class="sparkline-grid-preview" @click="openTab">
       <div class="preview-header">
          <i class="pi pi-chart-bar" />
-         <span>{{ data.title || 'Sparkline Grid' }}</span>
+         <span>{{ data.title || t('viz.types.sparkline-grid') }}</span>
          <i class="pi pi-external-link preview-link" />
       </div>
       <div class="sparkline-preview-list">
          <div v-for="(item, i) in previewItems" :key="i" class="sparkline-preview-row">
             <span class="sparkline-preview-rank">{{ i + 1 }}</span>
             <span class="sparkline-preview-label">{{ item.label }}</span>
-            <span class="sparkline-preview-value">{{ formatValue(item.value, data.unit) }}</span>
+            <bdi class="sparkline-preview-value">{{ formatValue(item.value, data.unit) }}</bdi>
          </div>
          <div v-if="remainingCount > 0" class="sparkline-preview-more">
-            +{{ remainingCount }} more
+            {{ t('viz.sparkline.more', { count: remainingCount }) }}
          </div>
       </div>
    </div>
@@ -71,7 +72,7 @@ function openTab() {
 }
 
 .sparkline-grid-preview .preview-link {
-   margin-left: auto;
+   margin-inline-start: auto;
    font-size: 0.7rem;
    opacity: 0;
    transition: opacity 0.15s;
@@ -96,7 +97,7 @@ function openTab() {
 .sparkline-preview-rank {
    flex-shrink: 0;
    width: 1.25rem;
-   text-align: right;
+   text-align: end;
    font-weight: 600;
    color: var(--p-text-muted-color);
    font-size: 0.75rem;
@@ -119,6 +120,7 @@ function openTab() {
 .sparkline-preview-more {
    font-size: 0.75rem;
    color: var(--p-text-muted-color);
-   padding: 0.25rem 0 0 1.75rem;
+   padding: 0.25rem 0 0;
+   padding-inline-start: 1.75rem;
 }
 </style>

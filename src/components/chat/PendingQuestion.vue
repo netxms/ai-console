@@ -1,5 +1,6 @@
 <script setup>
 import Button from 'primevue/button'
+import { t } from '@/i18n'
 
 const props = defineProps({
   question: { type: Object, required: true },
@@ -31,12 +32,12 @@ function handleOption(index) {
 
     <div v-else class="question-actions">
       <Button
-        :label="question.confirmationType === 1 ? 'Yes' : 'Approve'"
+        :label="question.confirmationType === 1 ? t('question.yes') : t('question.approve')"
         size="small"
         @click="emit('answer', true)"
       />
       <Button
-        :label="question.confirmationType === 1 ? 'No' : 'Reject'"
+        :label="question.confirmationType === 1 ? t('question.no') : t('question.reject')"
         severity="secondary"
         outlined
         size="small"

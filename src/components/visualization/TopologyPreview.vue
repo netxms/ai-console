@@ -1,7 +1,8 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useVisualizationStore } from '@/stores/visualizationStore'
 import { getTopology } from '@/api/topologyApi'
+import { t } from '@/i18n'
 
 const props = defineProps({
    data: { type: Object, required: true },
@@ -13,12 +14,12 @@ const error = ref(null)
 const nodeCount = ref(0)
 const linkCount = ref(0)
 
-const typeLabels = {
+const typeLabels = computed(() => ({
    l2: 'L2',
    ip: 'IP',
    ospf: 'OSPF',
-   internal: 'Internal',
-}
+   internal: t('viz.topology.internal'),
+}))
 
 onMounted(async () => {
    try {
@@ -45,13 +46,13 @@ function openTab() {
    <div class="topology-preview" @click="openTab">
       <div class="preview-header">
          <i class="pi pi-sitemap" />
-         <span>{{ data.title || 'Topology' }}</span>
+         <span>{{ data.title || t('viz.types.topology') }}</span>
          <span class="topology-type-badge">{{ typeLabels[data.topologyType] || data.topologyType }}</span>
          <i class="pi pi-external-link preview-link" />
       </div>
       <div v-if="loading" class="topology-preview-body">
          <i class="pi pi-spinner pi-spin" />
-         <span>Loading topology...</span>
+         <span>{{ t('viz.topology.loading') }}</span>
       </div>
       <div v-else-if="error" class="viz-error">
          <i class="pi pi-exclamation-triangle" />
@@ -61,11 +62,11 @@ function openTab() {
          <div class="topology-preview-stats">
             <div class="topology-stat">
                <span class="topology-stat-value">{{ nodeCount }}</span>
-               <span class="topology-stat-label">nodes</span>
+               <span class="topology-stat-label">{{ t('viz.topology.nodes', { count: nodeCount }) }}</span>
             </div>
             <div class="topology-stat">
                <span class="topology-stat-value">{{ linkCount }}</span>
-               <span class="topology-stat-label">links</span>
+               <span class="topology-stat-label">{{ t('viz.topology.links', { count: linkCount }) }}</span>
             </div>
          </div>
       </div>
@@ -98,7 +99,7 @@ function openTab() {
 }
 
 .topology-preview .preview-link {
-   margin-left: auto;
+   margin-inline-start: auto;
    font-size: 0.7rem;
    opacity: 0;
    transition: opacity 0.15s;

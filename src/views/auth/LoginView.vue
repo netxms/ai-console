@@ -8,6 +8,7 @@ import Message from 'primevue/message'
 import { useAuthStore } from '@/stores/authStore'
 import { useThemeStore } from '@/stores/themeStore'
 import { brand } from '@/brands'
+import { t } from '@/i18n'
 
 const router = useRouter()
 const route = useRoute()
@@ -41,7 +42,7 @@ async function handleLogin() {
       </Message>
 
       <div class="field">
-        <label for="username">Username</label>
+        <label for="username">{{ t('login.username') }}</label>
         <InputText
           id="username"
           v-model="username"
@@ -51,7 +52,7 @@ async function handleLogin() {
       </div>
 
       <div class="field">
-        <label for="password">Password</label>
+        <label for="password">{{ t('login.password') }}</label>
         <Password
           id="password"
           v-model="password"
@@ -64,7 +65,7 @@ async function handleLogin() {
       </div>
 
       <Button
-        label="Sign In"
+        :label="t('login.signIn')"
         type="submit"
         :loading="authStore.loading"
         :fluid="true"

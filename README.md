@@ -23,6 +23,7 @@ _Chat interface with inline chart previews on the left, full interactive visuali
 - **Tables with filtering** — sortable, paginated, with global text filter and severity badges
 - **Visualization toolbar** — fullscreen, PNG export, CSV copy
 - **Dark mode** — toggleable dark/light theme with OS preference detection
+- **Localization** — English, German, and Arabic (right-to-left) UI with a language switch in the header
 - **Pending questions** — the AI can ask for confirmation or offer multiple-choice options mid-conversation
 - **XSS protection** — sanitized Markdown rendering
 

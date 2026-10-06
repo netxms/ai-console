@@ -37,6 +37,10 @@ src/
     authStore.js    # session, user, localStorage persistence
     aiChatStore.js  # messages, polling loop, send/answer flow
     visualizationStore.js  # tabbed visualization panel state
+    localeStore.js  # UI language, persistence, <html lang/dir>
+  i18n/
+    index.js        # t(), formatTime(), formatDateTime()
+    locales/        # en.js, de.js, ar.js message files + registry (index.js)
   components/
     chat/           # Chat UI
       ChatPanel.vue         # Composes MessageList + ChatInput + PendingQuestion
@@ -60,6 +64,7 @@ src/
       TableView.vue           # Full DataTable with filter, pagination, sort
     layout/
       AppHeader.vue   # Title bar, New Chat (with confirmation), logout
+      LanguageSwitch.vue  # Language menu button in the header
   layouts/
     AssistantLayout.vue  # Header + main slot
   views/
@@ -104,6 +109,15 @@ Each visualization block gets an auto-generated `id` and can be opened as a tab.
 
 ### XSS Protection
 `TextBlock.vue` sanitizes Markdown HTML output by stripping `<script>`, `<iframe>`, `<object>`, `<embed>`, `<link>` tags, event handler attributes, and `javascript:` URIs.
+
+### Localization
+All UI strings go through `t('section.key', params)` from `@/i18n` (a small built-in implementation — no vue-i18n). Messages live in `src/i18n/locales/{en,de,ar}.js`; a message may be an object of plural forms (`one`, `few`, `other`, ...) selected by the `count` parameter. `t()` is reactive in templates and computeds; it falls back to English for missing keys. The current language is held in `localeStore` (persisted in `localStorage`, defaults to the browser language), which also sets `lang` and `dir` on `<html>`.
+
+Brand name/title, server-provided text (AI responses, server error messages, function names), and data values are not translated.
+
+When adding or changing UI text, update all locale files. To add a language, create its message file and register it in `src/i18n/locales/index.js`.
+
+Arabic is right-to-left, so CSS must use logical properties (`margin-inline-start`, `padding-inline-end`, `inset-inline-start`, `border-start-start-radius`, `text-align: start/end`) instead of left/right. Canvas-based visualizations (ECharts, Leaflet, vis-network) are forced to LTR in `main.css`. Use `dir="auto"` or `<bdi>` for user/AI/server-provided text that may be in a different script than the UI.
 
 ### Error Boundaries
 All visualization computed option builders are wrapped in try-catch. Malformed data shows an error message instead of crashing the component.

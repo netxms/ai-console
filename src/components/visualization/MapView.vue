@@ -7,6 +7,7 @@ import { createTileLayer } from '@/utils/tileUrl'
 import { getStatusColor } from '@/utils/statusColors'
 import { escapeHtml } from '@/utils/escapeHtml'
 import { csvSafe } from '@/utils/csvSafe'
+import { t } from '@/i18n'
 
 const props = defineProps({
    data: { type: Object, required: true },
@@ -43,7 +44,7 @@ async function initMap() {
       await serverInfoStore.fetch()
       const tileUrl = serverInfoStore.tileServerURL()
       if (!tileUrl) {
-         error.value = 'Tile server URL not available'
+         error.value = t('viz.map.tileServerUnavailable')
          return
       }
 
@@ -93,7 +94,9 @@ function buildPopup(m) {
 }
 
 function getColumnsAsCsv() {
-   const header = 'Label,Object Name,Object ID,Latitude,Longitude,Status'
+   const header = ['label', 'objectName', 'objectId', 'latitude', 'longitude', 'status']
+      .map((column) => csvSafe(t(`viz.map.csv.${column}`)))
+      .join(',')
    const body = (props.data.markers || []).map((m) =>
       [
          csvSafe(m.label),
@@ -132,7 +135,7 @@ onBeforeUnmount(() => {
    <div class="map-view">
       <div v-if="error" class="viz-error">
          <i class="pi pi-exclamation-triangle" />
-         <span>Failed to render map: {{ error }}</span>
+         <span>{{ t('viz.mapRenderFailed', { error }) }}</span>
       </div>
       <div v-else ref="mapContainer" class="map-full" />
    </div>

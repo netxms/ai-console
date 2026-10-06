@@ -22,7 +22,10 @@ const html = computed(() => {
 </script>
 
 <template>
-  <div class="text-block" v-html="html" />
+  <div class="text-block">
+    <!-- Text direction follows the content, which may differ from the UI language -->
+    <div dir="auto" v-html="html" />
+  </div>
 </template>
 
 <style>
@@ -30,7 +33,8 @@ const html = computed(() => {
   padding: 0.625rem 0.875rem;
   background: var(--p-surface-card);
   border: 1px solid var(--p-surface-border);
-  border-radius: 2px 12px 12px 12px;
+  border-radius: 12px;
+  border-start-start-radius: 2px;
   line-height: 1.55;
   word-break: break-word;
 }

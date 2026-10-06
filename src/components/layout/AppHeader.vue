@@ -8,6 +8,8 @@ import { useVisualizationStore } from '@/stores/visualizationStore'
 import { useThemeStore } from '@/stores/themeStore'
 import { useRouter } from 'vue-router'
 import { brand } from '@/brands'
+import { t } from '@/i18n'
+import LanguageSwitch from './LanguageSwitch.vue'
 
 const authStore = useAuthStore()
 const themeStore = useThemeStore()
@@ -50,19 +52,20 @@ function handleLogout() {
     </div>
     <div class="header-right">
       <Button
-        label="New Chat"
+        :label="t('header.newChat')"
         icon="pi pi-plus"
         severity="secondary"
         text
         size="small"
         @click="handleNewChat"
       />
+      <LanguageSwitch />
       <Button
         :icon="themeStore.dark ? 'pi pi-sun' : 'pi pi-moon'"
         severity="secondary"
         text
         size="small"
-        v-tooltip.bottom="themeStore.dark ? 'Light mode' : 'Dark mode'"
+        v-tooltip.bottom="themeStore.dark ? t('header.lightMode') : t('header.darkMode')"
         @click="themeStore.toggle()"
       />
       <span class="user-name">{{ authStore.user?.username }}</span>
@@ -71,21 +74,21 @@ function handleLogout() {
         severity="secondary"
         text
         size="small"
-        v-tooltip.bottom="'Logout'"
+        v-tooltip.bottom="t('header.logout')"
         @click="handleLogout"
       />
     </div>
 
     <Dialog
       v-model:visible="showConfirm"
-      header="New Chat"
+      :header="t('header.newChat')"
       :modal="true"
       :style="{ width: '24rem' }"
     >
-      <p style="margin: 0;">Start a new chat? Current conversation will be cleared.</p>
+      <p style="margin: 0;">{{ t('header.newChatConfirm') }}</p>
       <template #footer>
-        <Button label="Cancel" severity="secondary" text @click="showConfirm = false" />
-        <Button label="New Chat" severity="danger" @click="doNewChat" />
+        <Button :label="t('common.cancel')" severity="secondary" text @click="showConfirm = false" />
+        <Button :label="t('header.newChat')" severity="danger" @click="doNewChat" />
       </template>
     </Dialog>
   </header>

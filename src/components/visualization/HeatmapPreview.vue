@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useVisualizationStore } from '@/stores/visualizationStore'
+import { t } from '@/i18n'
 
 const props = defineProps({
    data: { type: Object, required: true },
@@ -79,7 +80,7 @@ function openTab() {
    <div class="heatmap-preview" @click="openTab">
       <div class="preview-header">
          <i class="pi pi-th-large" />
-         <span>{{ data.title || 'Heatmap' }}</span>
+         <span>{{ data.title || t('viz.types.heatmap') }}</span>
          <i class="pi pi-external-link preview-link" />
       </div>
       <div class="heatmap-preview-body">
@@ -115,7 +116,7 @@ function openTab() {
 }
 
 .heatmap-preview .preview-link {
-   margin-left: auto;
+   margin-inline-start: auto;
    font-size: 0.7rem;
    opacity: 0;
    transition: opacity 0.15s;

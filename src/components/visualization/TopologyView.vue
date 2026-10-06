@@ -5,6 +5,7 @@ import { DataSet } from 'vis-data'
 import Button from 'primevue/button'
 import { getTopology } from '@/api/topologyApi'
 import { getStatusColorHex } from '@/utils/statusColors'
+import { t } from '@/i18n'
 
 const props = defineProps({
    data: { type: Object, required: true },
@@ -75,7 +76,12 @@ async function loadTopology() {
    const limitedLinks = rawLinks.filter((l) => nodeIds.has(l.object1) && nodeIds.has(l.object2)).slice(0, MAX_EDGES)
 
    if (truncated) {
-      warning.value = `Topology truncated for performance (showing ${limitedObjects.length} of ${rawObjects.length} nodes, ${limitedLinks.length} of ${rawLinks.length} links)`
+      warning.value = {
+         nodes: limitedObjects.length,
+         totalNodes: rawObjects.length,
+         links: limitedLinks.length,
+         totalLinks: rawLinks.length,
+      }
    }
 
    const nodes = new DataSet(limitedObjects.map((obj) => ({
@@ -90,7 +96,7 @@ async function loadTopology() {
          },
       },
       font: { color: '#333333', size: 12 },
-      title: `${obj.name || '#' + obj.id}\nClass: ${obj.class}\nStatus: ${statusNames[obj.status] || obj.status}`,
+      title: `${obj.name || '#' + obj.id}\n${t('viz.topology.class')}: ${obj.class}\n${t('viz.topology.status')}: ${statusNames[obj.status] ? t(`severity.${statusNames[obj.status]}`) : obj.status}`,
    })))
 
    // Count parallel edges between same node pairs to fan them out
@@ -209,24 +215,24 @@ onBeforeUnmount(() => {
    <div class="topology-view">
       <div v-if="loading" class="topology-loading">
          <i class="pi pi-spinner pi-spin" />
-         <span>Building topology...</span>
+         <span>{{ t('viz.topology.building') }}</span>
       </div>
       <div v-else-if="error" class="viz-error">
          <i class="pi pi-exclamation-triangle" />
-         <span>Failed to load topology: {{ error }}</span>
+         <span>{{ t('viz.topology.loadFailed', { error }) }}</span>
       </div>
       <template v-else>
          <div class="topology-toolbar">
             <span v-if="warning" class="topology-warning">
                <i class="pi pi-exclamation-triangle" />
-               {{ warning }}
+               {{ t('viz.topology.truncated', warning) }}
             </span>
             <Button
                icon="pi pi-refresh"
                severity="secondary"
                text
                size="small"
-               v-tooltip.bottom="'Refresh'"
+               v-tooltip.bottom="t('viz.toolbar.refresh')"
                @click="refresh"
             />
          </div>

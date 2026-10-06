@@ -5,6 +5,7 @@ import AssistantMessage from './AssistantMessage.vue'
 import ProcessingIndicator from './ProcessingIndicator.vue'
 import { brand } from '@/brands'
 import { useAiChatStore } from '@/stores/aiChatStore'
+import { t } from '@/i18n'
 
 const chatStore = useAiChatStore()
 
@@ -33,9 +34,11 @@ watch(
       <i class="pi pi-sparkles empty-icon" />
       <p class="empty-title">{{ brand.name }} {{ brand.title }}</p>
       <p class="empty-hint">
-        {{ chatStore.contextObject
-          ? `Ask about ${chatStore.contextObject.object_name || 'this object'}...`
-          : 'Ask anything about your infrastructure' }}
+        <template v-if="!chatStore.contextObject">{{ t('chat.emptyHint') }}</template>
+        <template v-else-if="chatStore.contextObject.object_name">
+          {{ t('chat.emptyHintObject', { name: chatStore.contextObject.object_name }) }}
+        </template>
+        <template v-else>{{ t('chat.emptyHintThisObject') }}</template>
       </p>
     </div>
 

@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import Button from 'primevue/button'
 import Popover from 'primevue/popover'
 import { useSavedPromptsStore } from '@/stores/savedPromptsStore'
+import { t } from '@/i18n'
 
 const emit = defineEmits(['select'])
 
@@ -37,14 +38,14 @@ defineExpose({ toggle })
    <Popover ref="op" class="saved-prompts-popover">
       <div class="saved-prompts-panel">
          <div class="saved-prompts-header">
-            <span class="saved-prompts-title">Saved Prompts</span>
+            <span class="saved-prompts-title">{{ t('savedPrompts.title') }}</span>
          </div>
          <div v-if="store.loading" class="saved-prompts-loading">
             <i class="pi pi-spinner pi-spin" />
-            <span>Loading...</span>
+            <span>{{ t('common.loading') }}</span>
          </div>
          <div v-else-if="store.prompts.length === 0" class="saved-prompts-empty">
-            No saved prompts yet
+            {{ t('savedPrompts.empty') }}
          </div>
          <div v-else class="saved-prompts-list">
             <div
@@ -158,6 +159,6 @@ defineExpose({ toggle })
 
 .saved-prompt-actions {
    flex-shrink: 0;
-   padding-right: 0.25rem;
+   padding-inline-end: 0.25rem;
 }
 </style>

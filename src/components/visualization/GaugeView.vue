@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import VChart from 'vue-echarts'
+import { t } from '@/i18n'
 
 const props = defineProps({
   data: { type: Object, required: true },
@@ -60,7 +61,7 @@ defineExpose({ chartRef })
   <div class="gauge-view">
     <div v-if="error" class="viz-error">
       <i class="pi pi-exclamation-triangle" />
-      <span>Failed to render gauge: {{ error }}</span>
+      <span>{{ t('viz.gaugeRenderFailed', { error }) }}</span>
     </div>
     <VChart v-else-if="option" ref="chartRef" :option="option" class="gauge-full" autoresize />
   </div>

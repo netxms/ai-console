@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue'
+import { formatTime } from '@/i18n'
 
 const props = defineProps({
   content: { type: String, required: true },
@@ -8,15 +9,14 @@ const props = defineProps({
 
 const timeLabel = computed(() => {
   if (!props.timestamp) return ''
-  const d = new Date(props.timestamp)
-  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  return formatTime(props.timestamp)
 })
 </script>
 
 <template>
   <div class="user-message">
     <div class="user-bubble">
-      {{ content }}
+      <div dir="auto">{{ content }}</div>
       <span v-if="timeLabel" class="msg-time">{{ timeLabel }}</span>
     </div>
     <div class="user-avatar">
@@ -52,7 +52,8 @@ const timeLabel = computed(() => {
   padding: 0.625rem 0.875rem;
   background: var(--surface-2);
   color: var(--text-primary);
-  border-radius: 12px 12px 2px 12px;
+  border-radius: 12px;
+  border-end-end-radius: 2px;
   white-space: pre-wrap;
   word-break: break-word;
   line-height: 1.45;
@@ -63,7 +64,7 @@ const timeLabel = computed(() => {
   display: block;
   font-size: 0.65rem;
   opacity: 0.7;
-  text-align: right;
+  text-align: end;
   margin-top: 0.25rem;
 }
 </style>
